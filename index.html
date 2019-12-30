@@ -1,0 +1,267 @@
+<!-- DEBUG: MAP IS APPEARING BEHIND THE SEARCH DIV BECAUSE OF DOM ISSUES WITH
+THE SEARCH MODAL, PUTTING SEARCH DIV NEXT TO MODAL FIXES MAP RENDERING BUT
+CAUSES THE SEARCH RESULTS TO LOOK SMALL BECAUSE NEEDED CLASSES AREN'T APPLIED
+PROPERLY (MAINLY DUE TO AD-HOC STATE BEHAVIOUR OF THE APP. NEED TO REDESIGN
+IT TO BE MUCH CLEANER) -->
+
+<!DOCTYPE html>
+<html lang="en-GB" dir="ltr">
+	<head>
+		<title>UoP Bus App</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		 <meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+		<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate, max-age=0" />
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="styles/style.css"/>
+	</head>
+	<body scroll="no">
+		<div id="schedule-modal" class="modal">
+			<div class="popup-container">
+				<div id="schedule-popup" class="popup">
+					<div class="popup-header">
+						Schedule
+					</div>
+					<div data-option="leave now" class="popup-option">
+						<div class="popup-radio-button popup-radio-button-active">
+							<div class="popup-radio-button-dot"></div>
+						</div>Leave Now
+					</div>
+					<div data-option="depart at" class="popup-option">
+						<div class="popup-radio-button">
+							<div class="popup-radio-button-dot"></div>
+						</div>Depart At
+					</div>
+					<div data-option="arrive by" class="popup-option">
+						<div class="popup-radio-button">
+							<div class="popup-radio-button-dot"></div>
+						</div>Arrive By
+					</div>
+					<div id="schedule-datetime" class="popup-option popup-option-datetime">
+						
+					</div>
+					<div class="popup-buttons">
+						<div class="popup-button" id="popup-cancel">Cancel</div>
+						<div class="popup-button popup-button-confirm" id="popup-confirm">OK</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="sidebar-modal" class="modal">
+			<div id="sidebar" class="sidebar">
+				<div class="sidebar-option sidebar-logo">
+					UoP Bus App
+					<!--<img src="images/uop_logo.png"/>-->
+				</div>
+				<div class="sidebar-separator"></div>
+				<div class="sidebar-option sidebar-option-tick">Main Route (U1)</div>
+				<!--
+				<div class="sidebar-option sidebar-option-align">Langstone Campus (U2)</div>
+				<div class="sidebar-option sidebar-option-align">Park & Ride The Hard (PR1)</div>
+				<div class="sidebar-option sidebar-option-align">Park & Ride Tipner (PR2)</div>
+				<div class="sidebar-separator"></div>
+				<div class="sidebar-option sidebar-option-recent">Recent Trips</div>
+				<div class="sidebar-separator"></div>
+				<div class="sidebar-option" id="sidebar-settings-option">Settings</div>-->
+				<div class="sidebar-separator"></div>
+				<div class="sidebar-option" id="sidebar-language-option">Language</div>
+				<div class="sidebar-option" id="sidebar-help-option">Help</div>
+			</div>
+		</div>
+		<div class="screen" id="settings-screen">
+			<div class="screen-header">
+				<div id="settings-back" class="screen-header-button-back"></div>
+				<div class="screen-header-title">
+					Settings
+				</div>
+			</div>
+			<div class="settings-section">
+				<div class="settings-section-header">
+					Favourites
+				</div>
+				<div class="settings-choice settings-choice-home">
+					
+				</div>
+			</div>
+		</div>
+		<div class="screen" id="language-screen">
+			<div class="screen-header" id="language-header">
+				<div id="language-back" class="screen-header-button-back"></div>
+				<div class="screen-header-title">
+					Language
+				</div>
+				<div class="screen-header-button" id="language-apply">
+					Apply
+				</div>
+			</div>
+			<div class="language-options">
+				<div class="language-option language-option-active" data-active="English (United Kingdom)">
+					<div class="language-option-radio language-option-radio-active">
+						<div class="language-option-radio-dot"></div>
+					</div>
+					<div class="language-option-name">English (United Kingdom)</div>
+				</div>
+				<div class="language-separator"></div>
+				<!--
+				<div class="language-option">
+					<div class="language-option-radio">
+						<div class="language-option-radio-dot"></div>
+					</div>
+					<div class="language-option-name">Deutsche</div>
+				</div>
+				<div class="language-option">
+					<div class="language-option-radio">
+						<div class="language-option-radio-dot"></div>
+					</div>
+					<div class="language-option-name">Español (España)</div>
+				</div>
+				<div class="language-option">
+					<div class="language-option-radio">
+						<div class="language-option-radio-dot"></div>
+					</div>
+					<div class="language-option-name">Português (Portugal)</div>
+				</div>
+				<div class="language-option">
+					<div class="language-option-radio"></div>
+					<div class="language-option-name">ไทย</div>
+				</div>
+				-->
+			</div>
+		</div>
+		<div class="screen" id="help-screen">
+			<div class="screen-header" id="language-header">
+				<div id="help-back" class="screen-header-button-back"></div>
+				<div class="screen-header-title">
+					Help
+				</div>
+			</div>
+			<div class="screen-search help-search">
+				<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="help-searchbox" placeholder="What would you like to do?"/>
+			</div>
+			<div class="help-sections">
+				<div class="help-section help-section-bottom">
+					<div class="help-section-header">
+						<div class="help-section-header-title">Get arrival times for a stop</div>
+						<div class="help-section-header-arrow-down"></div>
+					</div>
+					<div class="help-section-links">
+						<div class="help-section-link">
+							Get arrival times for the next stop
+						</div>
+						<div class="help-section-link">
+							Get arrival times for another stop
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-screen" id="main-screen">
+			<div id="directions-modal" class="directions-modal">
+				<div class="directions-search">
+					<div id="directions-back" class="directions-back">
+						<div class="directions-back-button"></div>
+					</div>
+					<div class="directions-places">
+						<div class="directions-place">
+							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-start" placeholder="Choose starting point"/>
+						</div>
+						<div class="directions-place">
+							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-end" placeholder="Choose destination"/>
+						</div>
+					</div>
+					<div class="directions-options">
+						<div id="directions-options-button" class="directions-options-button"></div>
+					</div>
+				</div>
+				<div id="directions-results" class="directions-results">
+					<div class="directions-result">
+						<div class="search-result-icon search-result-icon-location"></div>
+						<div class="search-result-text">
+							<div class="search-result-query">Your location</div>
+							<div class="search-result-location"></div>
+						</div>
+					</div>
+					<div class="search-result-separator"></div>
+					<div class="directions-result">
+						<div class="search-result-icon search-result-icon-map"></div>
+						<div class="search-result-text">
+							<div class="search-result-query">Choose on map</div>
+							<div class="search-result-location"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="search-modal" class="search-modal">
+				<div id="search" class="search">
+					<div id="search-outer" class="search-outer">
+						<div id="search-button-sidebar" class="search-button search-button-sidebar"></div>
+						<div id="search-start" class="search-textbox">
+							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="start-searchbox" placeholder="Find an arrival time"/>
+						</div>
+						<!--
+						<div class="search-searchboxes">
+							
+						</div>
+						-->
+						<div id="search-button-delayed" class="search-button search-button-delayed"></div>
+					</div>
+					<div id="search-results" class="search-results"></div>
+				</div>
+			</div>
+			<div id="map" class="map"></div>
+			<div id="info" class="info">
+				<div class="info-minimized" id="info-minimized">
+					<div class="info-arrow"></div>
+					<div id="info-label" class="info-label">Tap to see quick actions</div>
+				</div>
+				<div id="info-resize" class="info-resize">
+					<div class="info-slider"></div>
+				</div>
+				<div class="info-section" id="info-quick">
+					<div class="info-section-header">Saved Trips</div>
+					<div class="info-section-trips">
+						<div class="info-section-trip">
+							<div class="info-section-trip-image
+							info-section-trip-image-home"></div>
+							<div class="info-section-trip-name">Home</div>
+						</div>
+						<div class="info-section-trip">
+							<div class="info-section-trip-image
+							info-section-trip-image-work"></div>
+							<div class="info-section-trip-name">Work</div>
+						</div>
+						<div class="info-section-trip">
+							<div class="info-section-trip-image
+							info-section-trip-image-gym"></div>
+							<div class="info-section-trip-name">Gym</div>
+						</div>
+					</div>
+				</div>
+				<div class="info-separator"></div>
+				<div id="info-arrival" class="info-arrival">
+					<div id="info-arrival-header" class="info-arrival-header">
+						University of Portsmouth
+					</div>
+					<div class="info-arrival-subheader">
+						Arrival Times
+					</div>
+					<div id="info-arrival-times" class="info-arrival-times"></div>
+				</div>
+				<div class="info-separator"></div>
+			</div>
+		</div>
+		
+		<!-- Post-Load Scripts to render DOM faster -->
+		<script src="scripts/util.js"></script>
+		<script src="scripts/data.js"></script>
+		<script src="scripts/timetable.js"></script>
+		<script src="scripts/map.js"></script>
+		<script src="scripts/app.js"></script>
+		<script src="scripts/script.js"></script>
+		<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g&callback=initMap&libraries=places">
+		</script>
+	</body>
+</html>
