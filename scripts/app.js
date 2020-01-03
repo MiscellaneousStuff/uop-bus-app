@@ -119,10 +119,6 @@ SIDEBAR OPTIONS
 ================================================================================
 */
 
-$("sidebar-language-option").addEventListener("click", function() {
-	app.show("language");
-});
-
 /*
 $("sidebar-settings-option").addEventListener("click", function() {
 	app.show("settings");
@@ -551,7 +547,6 @@ function addDirectionsResult(query, result) {
 		// Default
 		// 1. Location (If it hasn't already been used)
 		// 2. Choose on map
-		// 3. Recent
 		// Search Results
 		// 1-n. Places (Constrained to Portsmouth)
 	});
@@ -580,3 +575,23 @@ $("guide-screen-button-nav").addEventListener("click", function() {
 		$("guide-screen").style.display = "none";
 	}
 });
+
+/*
+================================================================================
+HELP GUIDE BUTTONS
+================================================================================
+*/
+
+$("help-guide-arrivals").addEventListener("click", helpGuideHandler);
+
+$("help-guide-routes").addEventListener("click", helpGuideHandler);
+
+$("help-guide-saving").addEventListener("click", helpGuideHandler);
+
+$("help-guide-schedule").addEventListener("click", helpGuideHandler);
+
+function helpGuideHandler() {
+	let type = this.id.split("-")[2];
+	app.show("guide"); 
+	console.log("help guide handler");
+}

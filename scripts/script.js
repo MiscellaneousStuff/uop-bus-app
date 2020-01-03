@@ -63,5 +63,5 @@ window.onload = function() {
 	showStops();
 	initSwipe(".guide-screen-fragments");
 	
-	app.show("guide");
+	app.show("help");
 }

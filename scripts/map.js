@@ -161,10 +161,10 @@ class MapComponent {
 						url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
 					}
 				});
-				this.map.setCenter(marker.position);
+				map.map.setCenter(marker.position);
 				marker.id = id;
 				google.maps.event.addListener(marker, 'click', handler);
-				this.markers.push(marker);
+				map.markers.push(marker);
 			} else {
 				this.geocoder.geocode(requestObject, function(results, status) {
 					if (status == "OK") {
@@ -192,7 +192,7 @@ class MapComponent {
 						console.log("GEOCODER'S FUCKED ITSELF: " + status, requestObject)
 					}
 				});
-				return this.markers[this.markers.length - 1];
+				return map.markers[map.markers.length - 1];
 			}
 			if (zoom)
 				this.map.setZoom(14);
@@ -227,6 +227,7 @@ function showStops() {
 	for (let i=0; i<stopPlaceCount; i++) {
 		let stopPlace = timetable.getStopPlace(i);
 		let marker = map.placeMarker({"address": stopPlace}, i, markerHandler, null, false, false);
+		console.log(map.markers);
 	}
 	map.updateRouteCenter();
 }
@@ -253,7 +254,6 @@ class StopsControl {
 			showStops();
 			$("stops-button").style.display = "none";
 		});
-		
 	}
 }
 

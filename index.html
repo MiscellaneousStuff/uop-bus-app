@@ -36,10 +36,10 @@ IT TO BE MUCH CLEANER) -->
 					
 					</div>
 					<div class="guide-screen-fragment-title">
-						Find a route between two places
+						Find a route between two stops
 					</div>
 					<div class="guide-screen-fragment-description">
-						Set your start and destination places to get directions using the bus service
+						Set your start and destination stops to get directions and departure & arrival times
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
@@ -50,7 +50,7 @@ IT TO BE MUCH CLEANER) -->
 						Saved routes
 					</div>
 					<div class="guide-screen-fragment-description">
-						Save frequented routes to save time
+						Save frequented routes to save time later
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
@@ -109,20 +109,9 @@ IT TO BE MUCH CLEANER) -->
 			<div id="sidebar" class="sidebar">
 				<div class="sidebar-option sidebar-logo">
 					UoP Bus App
-					<!--<img src="images/uop_logo.png"/>-->
 				</div>
 				<div class="sidebar-separator"></div>
-				<div class="sidebar-option sidebar-option-tick">Main Route (U1)</div>
-				<!--
-				<div class="sidebar-option sidebar-option-align">Langstone Campus (U2)</div>
-				<div class="sidebar-option sidebar-option-align">Park & Ride The Hard (PR1)</div>
-				<div class="sidebar-option sidebar-option-align">Park & Ride Tipner (PR2)</div>
-				<div class="sidebar-separator"></div>
-				<div class="sidebar-option sidebar-option-recent">Recent Trips</div>
-				<div class="sidebar-separator"></div>
-				<div class="sidebar-option" id="sidebar-settings-option">Settings</div>-->
-				<div class="sidebar-separator"></div>
-				<div class="sidebar-option" id="sidebar-language-option">Language</div>
+				<div class="sidebar-option" id="sidebar-help-routes">Recent Routes</div>
 				<div class="sidebar-option" id="sidebar-help-option">Help</div>
 			</div>
 		</div>
@@ -197,17 +186,47 @@ IT TO BE MUCH CLEANER) -->
 				<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="help-searchbox" placeholder="What would you like to do?"/>
 			</div>
 			<div class="help-sections">
-				<div class="help-section help-section-bottom">
+				<div class="help-section">
 					<div class="help-section-header">
-						<div class="help-section-header-title">Get arrival times for a stop</div>
+						<div class="help-section-header-title">Find arrival times for a stop</div>
 						<div class="help-section-header-arrow-down"></div>
 					</div>
 					<div class="help-section-links">
-						<div class="help-section-link">
-							Get arrival times for the next stop
+						<div class="help-section-link" id="help-guide-arrivals">
+							View the guide page
 						</div>
-						<div class="help-section-link">
-							Get arrival times for another stop
+					</div>
+				</div>
+				<div class="help-section">
+					<div class="help-section-header">
+						<div class="help-section-header-title">Get bus route info</div>
+						<div class="help-section-header-arrow-down"></div>
+					</div>
+					<div class="help-section-links">
+						<div class="help-section-link" id="help-guide-routes">
+							View the guide page
+						</div>
+					</div>
+				</div>
+				<div class="help-section">
+					<div class="help-section-header">
+						<div class="help-section-header-title">Saving routes</div>
+						<div class="help-section-header-arrow-down"></div>
+					</div>
+					<div class="help-section-links">
+						<div class="help-section-link" id="help-guide-saving">
+							View the guide page
+						</div>
+					</div>
+				</div>
+				<div class="help-section help-section-bottom">
+					<div class="help-section-header">
+						<div class="help-section-header-title">Change departure or arrival time</div>
+						<div class="help-section-header-arrow-down"></div>
+					</div>
+					<div class="help-section-links">
+						<div class="help-section-link" id="help-guide-schedule">
+							View the guide
 						</div>
 					</div>
 				</div>
@@ -270,7 +289,7 @@ IT TO BE MUCH CLEANER) -->
 			<div id="info" class="info">
 				<div class="info-minimized" id="info-minimized">
 					<div class="info-arrow"></div>
-					<div id="info-label" class="info-label">Tap to see quick actions</div>
+					<div id="info-label" class="info-label">Tap to see saved routes</div>
 				</div>
 				<div id="info-resize" class="info-resize">
 					<div class="info-slider"></div>
