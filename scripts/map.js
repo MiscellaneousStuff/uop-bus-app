@@ -227,7 +227,6 @@ function showStops() {
 	for (let i=0; i<stopPlaceCount; i++) {
 		let stopPlace = timetable.getStopPlace(i);
 		let marker = map.placeMarker({"address": stopPlace}, i, markerHandler, null, false, false);
-		console.log(map.markers);
 	}
 	map.updateRouteCenter();
 }

@@ -25,21 +25,7 @@ function move(e) {
 		_C.style.setProperty('--tx', '0px');
 		_C.classList.toggle('smooth', !(locked = false));
 		x0 = null;
-		let dots = $(".guide-screen-dot", true);
-		console.log(dots, dots.length);
-		for (let j=0; j<dots.length; j++) {
-			let dot = dots[j];
-			if (i == j) {
-				dot.classList.add("guide-screen-dot-active");
-			} else {
-				dot.classList.remove("guide-screen-dot-active");
-			}
-			if (j == i) {
-				
-			} else {
-				
-			}
-		}
+		setDot(i);
 	}
 };
 

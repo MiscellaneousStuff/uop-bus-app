@@ -578,7 +578,7 @@ $("guide-screen-button-nav").addEventListener("click", function() {
 
 /*
 ================================================================================
-HELP GUIDE BUTTONS
+HELP GUIDE BUTTONS HANDLERS
 ================================================================================
 */
 
@@ -592,6 +592,46 @@ $("help-guide-schedule").addEventListener("click", helpGuideHandler);
 
 function helpGuideHandler() {
 	let type = this.id.split("-")[2];
-	app.show("guide"); 
-	console.log("help guide handler");
+	app.hide("help");
+	app.show("guide");
+	switch (type) {
+		case "arrivals":
+			setGuidePage(0);
+			setDot(0);
+			break;
+		case "routes":
+			setGuidePage(1);
+			setDot(1);
+			break;
+		case "saving":
+			setGuidePage(2);
+			setDot(2);
+			break;
+		case "schedule":
+			setGuidePage(3);
+			setDot(3);
+			break;
+	}
+}
+
+/*
+================================================================================
+GUIDE HANDLERS
+================================================================================
+*/
+
+function setGuidePage(i) {
+	_C.style.setProperty("--i", i);
+}
+
+function setDot(i) {
+	let dots = $(".guide-screen-dot", true);
+	for (let j=0; j<dots.length; j++) {
+		let dot = dots[j];
+		if (i == j) {
+			dot.classList.add("guide-screen-dot-active");
+		} else {
+			dot.classList.remove("guide-screen-dot-active");
+		}
+	}
 }
