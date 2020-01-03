@@ -1022,3 +1022,112 @@ MAP - CONTROLS
 	background-position: center;
 	border: 2px solid #4285F4;
 }
+
+/*
+================================================================================
+GUIDE SCREEN
+================================================================================
+*/
+
+.guide-screen {
+	background-color: #0c3f94;
+}
+
+.guide-screen-bottom {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	background-color: #0c3f94;
+	color: #FFF;
+}
+
+.guide-screen-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	width: 4rem;
+	text-align: center;
+}
+
+.guide-screen-dots {
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
+	justify-content: center;
+	align-items: center;
+}
+
+.guide-screen-dot {
+	margin-left: 0.5rem;
+	width: 0.5rem;
+	height: 0.5rem;
+	background: rgba(128, 128, 128, 1);
+	border-radius: 100%;
+}
+
+.guide-screen-dot-active {
+	background: rgba(255, 255, 255, 1);
+}
+
+.guide-screen-fragment {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	box-sizing: border-box;
+	background-color: #0c3f94;
+	color: #FFF;
+	height: 100%;
+	width: 100%; // fallback
+	/*width: calc(100%/var(--n));*/
+	user-select: none;
+	pointer-events: none;
+}
+
+.guide-screen-fragment-title {
+	margin-bottom: 1.5rem;
+	font-size: 1.2rem;
+	font-weight: 600;
+	text-align: center;
+}
+
+.guide-screen-fragment-description {
+	font-size: 0.9rem;
+	text-align: center;
+	font-weight: 500;
+}
+
+.guide-screen-fragment-screenshot {
+	width: 187px;
+	height: 18rem;
+	margin-bottom: 1rem;
+	box-shadow: 0 10px 6px -6px rgb(0, 0, 0, 0.3);
+}
+
+.guide-screen-fragment-screenshot-schedule {
+	background-image: url("../images/screenshot_schedule.png");
+	background-repeat: no-repeat;
+}
+
+.guide-screen-fragments {
+	/*
+	display: flex;
+	flex-grow: 1;
+	*/
+	--n: 1;
+	display: flex;
+	align-items: center;
+	overflow-y: hidden;
+ 	/* width: 100%; // fallback */
+	width: calc(var(--n)*100%);
+	flex-grow: 1;
+	transform: translate(calc(var(--tx, 0px) + var(--i, 0)/var(--n)*-100%));
+	background-color: #0c3f94;
+}
+
+.smooth { transition: transform .2s ease-out; }

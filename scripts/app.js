@@ -574,3 +574,9 @@ $("directions-options-button").addEventListener("click", function() {
 	$("schedule-modal").style.display = "block";
 	liveTime = fillLiveTime($("schedule-datetime"));
 });
+
+$("guide-screen-button-nav").addEventListener("click", function() {
+	if ($("guide-screen").style.display == "flex") {
+		$("guide-screen").style.display = "none";
+	}
+});

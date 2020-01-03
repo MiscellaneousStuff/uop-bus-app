@@ -18,6 +18,62 @@ IT TO BE MUCH CLEANER) -->
 		<link rel="stylesheet" href="styles/style.css"/>
 	</head>
 	<body scroll="no">
+		<div class="screen guide-screen" id="guide-screen">
+			<div class="guide-screen-fragments">
+				<div class="guide-screen-fragment guide-screen-fragment-active">
+					<div class="guide-screen-fragment-screenshot">
+					
+					</div>
+					<div class="guide-screen-fragment-title">
+						Quickly find bus times
+					</div>
+					<div class="guide-screen-fragment-description">
+						Tap a stop icon to get scheduled arrival times by picking the time and date of travel
+					</div>
+				</div>
+				<div class="guide-screen-fragment">
+					<div class="guide-screen-fragment-screenshot">
+					
+					</div>
+					<div class="guide-screen-fragment-title">
+						Find a route between two places
+					</div>
+					<div class="guide-screen-fragment-description">
+						Set your start and destination places to get directions using the bus service
+					</div>
+				</div>
+				<div class="guide-screen-fragment">
+					<div class="guide-screen-fragment-screenshot">
+					
+					</div>
+					<div class="guide-screen-fragment-title">
+						Saved routes
+					</div>
+					<div class="guide-screen-fragment-description">
+						Save frequented routes to save time
+					</div>
+				</div>
+				<div class="guide-screen-fragment">
+					<div class="guide-screen-fragment-screenshot guide-screen-fragment-screenshot-schedule"></div>
+					<div class="guide-screen-fragment-title">
+						Change time and date of travel
+					</div>
+					<div class="guide-screen-fragment-description">
+						Change the time and date of arrivals or a route
+					</div>
+				</div>
+			</div>
+			<div class="guide-screen-bottom">
+				<div class="guide-screen-button">&nbsp</div>
+				<div class="guide-screen-dots">
+					<div class="guide-screen-dot guide-screen-dot-active"></div>
+					<div class="guide-screen-dot"></div>
+					<div class="guide-screen-dot"></div>
+					<div class="guide-screen-dot"></div>
+				</div>
+				<div id="guide-screen-button-nav" class="guide-screen-button">Skip</div>
+			</div>
+		</div>
 		<div id="schedule-modal" class="modal">
 			<div class="popup-container">
 				<div id="schedule-popup" class="popup">
@@ -255,6 +311,7 @@ IT TO BE MUCH CLEANER) -->
 		
 		<!-- Post-Load Scripts to render DOM faster -->
 		<script src="scripts/util.js"></script>
+		<script src="scripts/swipe.js"></script>
 		<script src="scripts/data.js"></script>
 		<script src="scripts/timetable.js"></script>
 		<script src="scripts/map.js"></script>
