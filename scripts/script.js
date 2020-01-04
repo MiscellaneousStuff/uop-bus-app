@@ -65,5 +65,5 @@ window.onload = function() {
 	showStops();
 	initSwipe(".guide-screen-fragments");
 	
-	app.show("routes");
+	app.show("guide");
 }
