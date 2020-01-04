@@ -1149,7 +1149,8 @@ ROUTES SCREEN
 */
 
 .routes-sections {
-	overflow-y: scroll;
+	flex-grow: 1;
+	overflow-y: auto;
 }
 
 .routes-section {

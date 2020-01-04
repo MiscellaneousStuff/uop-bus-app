@@ -99,30 +99,14 @@ function helpSectionHeaderHandler() {
 	}
 }
 
-$("language-back").addEventListener("click", function() {
-	app.hide("language");
-});
-
 $("help-back").addEventListener("click", function() {
 	app.hide("help");
 });
 
 /*
-$("settings-back").addEventListener("click", function() {
-	app.hide("settings");
-});
-*/
-
-/*
 ================================================================================
 SIDEBAR OPTIONS
 ================================================================================
-*/
-
-/*
-$("sidebar-settings-option").addEventListener("click", function() {
-	app.show("settings");
-});
 */
 
 $("sidebar-help-option").addEventListener("click", function() {
@@ -543,12 +527,6 @@ function addDirectionsResult(query, result) {
 	directionsResult.stopIndex = stopIndex;
 	directionsResult.addEventListener("click", function() {
 		console.log("hi");
-		// Handle different directions results here...
-		// Default
-		// 1. Location (If it hasn't already been used)
-		// 2. Choose on map
-		// Search Results
-		// 1-n. Places (Constrained to Portsmouth)
 	});
 	
 	if ($(".directions-result", true) != null) {
@@ -571,9 +549,12 @@ $("directions-options-button").addEventListener("click", function() {
 });
 
 $("guide-screen-button-nav").addEventListener("click", function() {
-	if ($("guide-screen").style.display == "flex") {
-		$("guide-screen").style.display = "none";
-	}
+	// Don't show the guide screen on load after it's shown the first time
+	if (localStorage.getItem("visited") === null)
+		localStorage.setItem("visited", "yes");
+	
+	// Hide Guide Screen
+	app.hide("guide");
 });
 
 /*
@@ -646,7 +627,3 @@ $("sidebar-help-routes").addEventListener("click", function() {
 $("routes-back").addEventListener("click", function() {
 	app.hide("routes");
 });
-
-function initRoutes() {
-	
-}

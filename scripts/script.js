@@ -65,5 +65,7 @@ window.onload = function() {
 	showStops();
 	initSwipe(".guide-screen-fragments");
 	
-	app.show("guide");
+	if (localStorage.getItem("visited") != "yes")
+		app.show("guide");
+	app.show("main");
 }
