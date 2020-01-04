@@ -44,10 +44,12 @@ window.onload = function() {
 	let settingsScreen 	= new Screen("settings", $("settings-screen"));
 	let helpScreen 		= new Screen("help", $("help-screen"));
 	let guideScreen		= new Screen("guide", $("guide-screen"));
+	let routesScreen	= new Screen("routes", $("routes-screen"));
 	
 	let sidebar = new Sidebar($("sidebar-modal"));
 	
-	app.addScreens(mainScreen, languageScreen, settingsScreen, helpScreen, guideScreen);
+	app.addScreens(mainScreen, languageScreen, settingsScreen,
+	helpScreen, guideScreen, routesScreen);
 	app.setSidebar(sidebar);
 	
 	app.show("main");
@@ -63,5 +65,5 @@ window.onload = function() {
 	showStops();
 	initSwipe(".guide-screen-fragments");
 	
-	app.show("help");
+	app.show("routes");
 }

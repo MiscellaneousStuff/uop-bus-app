@@ -182,15 +182,3 @@ class U1 extends Timetable {
 		}
 	}
 }
-
-class U2 extends Timetable {
-	
-}
-
-class PR1 extends Timetable {
-	
-}
-
-class PR2 extends Timetable {
-	
-}

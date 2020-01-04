@@ -21,20 +21,16 @@ IT TO BE MUCH CLEANER) -->
 		<div class="screen guide-screen" id="guide-screen">
 			<div class="guide-screen-fragments">
 				<div class="guide-screen-fragment guide-screen-fragment-active">
-					<div class="guide-screen-fragment-screenshot">
-					
-					</div>
+					<div class="guide-screen-fragment-screenshot guide-screen-fragment-screenshot-arrivals"></div>
 					<div class="guide-screen-fragment-title">
 						Quickly find bus times
 					</div>
 					<div class="guide-screen-fragment-description">
-						Tap a stop icon to get scheduled arrival times by picking the time and date of travel
+						Tap a stop icon or search for a stop to get scheduled arrival times by picking the time and date of travel
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
-					<div class="guide-screen-fragment-screenshot">
-					
-					</div>
+					<div class="guide-screen-fragment-screenshot guide-screen-fragment-screenshot-routes"></div>
 					<div class="guide-screen-fragment-title">
 						Find a route between two stops
 					</div>
@@ -43,14 +39,12 @@ IT TO BE MUCH CLEANER) -->
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
-					<div class="guide-screen-fragment-screenshot">
-					
-					</div>
+					<div class="guide-screen-fragment-screenshot"></div>
 					<div class="guide-screen-fragment-title">
 						Saved routes
 					</div>
 					<div class="guide-screen-fragment-description">
-						Save frequented routes to save time later
+						Save the routes which you use frequently
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
@@ -175,6 +169,56 @@ IT TO BE MUCH CLEANER) -->
 				-->
 			</div>
 		</div>
+		<div class="screen" id="routes-screen">
+			<div class="screen-header" id="routes-header">
+				<div id="routes-back" class="screen-header-button-back"></div>
+				<div class="screen-header-title">
+					Recent Routes
+				</div>
+			</div>
+			<div class="routes-sections">
+				<div class="routes-section">
+					<div class="routes-section-map">
+						
+					</div>
+					<div class="routes-section-desc">
+						<div class="routes-section-desc-stops">
+							<div class="routes-section-desc-start">
+								University of Portsmouth
+							</div>
+							<div class="routes-section-desc-end">
+								Festing Hotel
+							</div>
+						</div>
+						<div class="routes-section-desc-icon">
+							<div class="info-section-trip">
+								<div class="info-section-trip-image info-section-trip-image-home"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="routes-section">
+					<div class="routes-section-map">
+						
+					</div>
+					<div class="routes-section-desc">
+						<div class="routes-section-desc-stops">
+							<div class="routes-section-desc-start">
+								Fratton Bridge
+							</div>
+							<div class="routes-section-desc-end">
+								Winston Churchill Avenue
+							</div>
+						</div>
+						<div class="routes-section-desc-icon">
+							<div class="info-section-trip">
+								<div class="info-section-trip-image info-section-trip-image-work"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="screen" id="help-screen">
 			<div class="screen-header" id="language-header">
 				<div id="help-back" class="screen-header-button-back"></div>
@@ -182,9 +226,11 @@ IT TO BE MUCH CLEANER) -->
 					Help
 				</div>
 			</div>
+			<!--
 			<div class="screen-search help-search">
 				<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="help-searchbox" placeholder="What would you like to do?"/>
 			</div>
+			-->
 			<div class="help-sections">
 				<div class="help-section">
 					<div class="help-section-header">
@@ -240,10 +286,10 @@ IT TO BE MUCH CLEANER) -->
 					</div>
 					<div class="directions-places">
 						<div class="directions-place">
-							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-start" placeholder="Choose starting point"/>
+							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-start" placeholder="Choose starting stop"/>
 						</div>
 						<div class="directions-place">
-							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-end" placeholder="Choose destination"/>
+							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-end" placeholder="Choose end stop"/>
 						</div>
 					</div>
 					<div class="directions-options">
@@ -295,8 +341,9 @@ IT TO BE MUCH CLEANER) -->
 					<div class="info-slider"></div>
 				</div>
 				<div class="info-section" id="info-quick">
-					<div class="info-section-header">Saved Trips</div>
+					<div class="info-section-header">No Saved Routes</div>
 					<div class="info-section-trips">
+					<!--
 						<div class="info-section-trip">
 							<div class="info-section-trip-image
 							info-section-trip-image-home"></div>
@@ -312,6 +359,7 @@ IT TO BE MUCH CLEANER) -->
 							info-section-trip-image-gym"></div>
 							<div class="info-section-trip-name">Gym</div>
 						</div>
+					-->
 					</div>
 				</div>
 				<div class="info-separator"></div>

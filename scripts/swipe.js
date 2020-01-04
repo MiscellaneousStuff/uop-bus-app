@@ -25,7 +25,7 @@ function move(e) {
 		_C.style.setProperty('--tx', '0px');
 		_C.classList.toggle('smooth', !(locked = false));
 		x0 = null;
-		setDot(i);
+		setGuidePage(i);
 	}
 };
 

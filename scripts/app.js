@@ -592,24 +592,19 @@ $("help-guide-schedule").addEventListener("click", helpGuideHandler);
 
 function helpGuideHandler() {
 	let type = this.id.split("-")[2];
-	app.hide("help");
 	app.show("guide");
 	switch (type) {
 		case "arrivals":
 			setGuidePage(0);
-			setDot(0);
 			break;
 		case "routes":
 			setGuidePage(1);
-			setDot(1);
 			break;
 		case "saving":
 			setGuidePage(2);
-			setDot(2);
 			break;
 		case "schedule":
 			setGuidePage(3);
-			setDot(3);
 			break;
 	}
 }
@@ -622,9 +617,6 @@ GUIDE HANDLERS
 
 function setGuidePage(i) {
 	_C.style.setProperty("--i", i);
-}
-
-function setDot(i) {
 	let dots = $(".guide-screen-dot", true);
 	for (let j=0; j<dots.length; j++) {
 		let dot = dots[j];
@@ -634,4 +626,27 @@ function setDot(i) {
 			dot.classList.remove("guide-screen-dot-active");
 		}
 	}
+	if (i == 3) {
+		$("guide-screen-button-nav").textContent = "DONE";
+	} else {
+		$("guide-screen-button-nav").textContent = "Skip";
+	}
+}
+
+/*
+================================================================================
+RECENT ROUTES HANDLERS
+================================================================================
+*/
+
+$("sidebar-help-routes").addEventListener("click", function() {
+	app.show("routes");
+});
+
+$("routes-back").addEventListener("click", function() {
+	app.hide("routes");
+});
+
+function initRoutes() {
+	
 }

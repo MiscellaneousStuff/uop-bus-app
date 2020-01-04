@@ -1031,6 +1031,7 @@ GUIDE SCREEN
 
 .guide-screen {
 	background-color: #0c3f94;
+	z-index: 99999;
 }
 
 .guide-screen-bottom {
@@ -1107,11 +1108,20 @@ GUIDE SCREEN
 	height: 18rem;
 	margin-bottom: 1rem;
 	box-shadow: 0 10px 6px -6px rgb(0, 0, 0, 0.3);
+	background-repeat: no-repeat;
+	background-size: 187px 374px;
+}
+
+.guide-screen-fragment-screenshot-arrivals {
+	background-image: url("../images/screenshot_arrivals.png");
+}
+
+.guide-screen-fragment-screenshot-routes {
+	background-image: url("../images/screenshot_routes.png");
 }
 
 .guide-screen-fragment-screenshot-schedule {
 	background-image: url("../images/screenshot_schedule.png");
-	background-repeat: no-repeat;
 }
 
 .guide-screen-fragments {
@@ -1131,3 +1141,36 @@ GUIDE SCREEN
 }
 
 .smooth { transition: transform .2s ease-out; }
+
+/*
+================================================================================
+ROUTES SCREEN
+================================================================================
+*/
+
+.routes-sections {
+	overflow-y: scroll;
+}
+
+.routes-section {
+	display: flex;
+	flex-direction: column;
+}
+
+.routes-section-map {
+	background: rgba(0, 0, 0, 0.5);
+	height: 7rem;
+}
+
+.routes-section-desc {
+	display: flex;
+	flex-direction: row;
+	padding: 1rem;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.routes-section-desc-stops {
+	display: flex;
+	flex-direction: column;
+}
