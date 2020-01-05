@@ -39,17 +39,18 @@ window.onload = function() {
 	/* APP OBJECTS */
 	app = new App();
 	
-	let mainScreen 		= new Screen("main", $("main-screen"));
-	let languageScreen 	= new Screen("language", $("language-screen"));
-	let settingsScreen 	= new Screen("settings", $("settings-screen"));
-	let helpScreen 		= new Screen("help", $("help-screen"));
-	let guideScreen		= new Screen("guide", $("guide-screen"));
-	let routesScreen	= new Screen("routes", $("routes-screen"));
+	let mainScreen 			= new Screen("main", $("main-screen"));
+	let languageScreen 		= new Screen("language", $("language-screen"));
+	let settingsScreen 		= new Screen("settings", $("settings-screen"));
+	let helpScreen 			= new Screen("help", $("help-screen"));
+	let guideScreen			= new Screen("guide", $("guide-screen"));
+	let routesScreen		= new Screen("routes", $("routes-screen"));
+	let directionsScreen	= new Screen("directions", $("directions-modal"));
 	
 	let sidebar = new Sidebar($("sidebar-modal"));
 	
 	app.addScreens(mainScreen, languageScreen, settingsScreen,
-	helpScreen, guideScreen, routesScreen);
+	helpScreen, guideScreen, routesScreen, directionsScreen);
 	app.setSidebar(sidebar);
 	
 	app.show("main");

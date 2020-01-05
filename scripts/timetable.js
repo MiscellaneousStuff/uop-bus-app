@@ -28,6 +28,9 @@ class Timetable {
 		this.stopPlaces = stopPlaces;
 		this.circular = circular;
 	}
+	getTitle() {
+		return this.title;
+	}
 	getStopPlaces() {
 		return this.stopPlaces;
 	}

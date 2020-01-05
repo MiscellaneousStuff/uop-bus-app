@@ -1,9 +1,3 @@
-<!-- DEBUG: MAP IS APPEARING BEHIND THE SEARCH DIV BECAUSE OF DOM ISSUES WITH
-THE SEARCH MODAL, PUTTING SEARCH DIV NEXT TO MODAL FIXES MAP RENDERING BUT
-CAUSES THE SEARCH RESULTS TO LOOK SMALL BECAUSE NEEDED CLASSES AREN'T APPLIED
-PROPERLY (MAINLY DUE TO AD-HOC STATE BEHAVIOUR OF THE APP. NEED TO REDESIGN
-IT TO BE MUCH CLEANER) -->
-
 <!DOCTYPE html>
 <html lang="en-GB" dir="ltr">
 	<head>
@@ -17,7 +11,7 @@ IT TO BE MUCH CLEANER) -->
 		<meta name="mobile-web-app-capable" content="yes">
 		<link rel="stylesheet" href="styles/style.css"/>
 	</head>
-	<body scroll="no">
+	<body>
 		<div class="screen guide-screen" id="guide-screen">
 			<div class="guide-screen-fragments">
 				<div class="guide-screen-fragment guide-screen-fragment-active">
@@ -117,6 +111,7 @@ IT TO BE MUCH CLEANER) -->
 				</div>
 			</div>
 			<div class="routes-sections">
+				<!--
 				<div class="routes-section">
 					<div class="routes-section-map">
 						
@@ -157,6 +152,7 @@ IT TO BE MUCH CLEANER) -->
 						</div>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 		<div class="screen" id="help-screen">
@@ -213,42 +209,28 @@ IT TO BE MUCH CLEANER) -->
 				</div>
 			</div>
 		</div>
-		<div class="main-screen" id="main-screen">
-			<div id="directions-modal" class="directions-modal">
-				<div class="directions-search">
-					<div id="directions-back" class="directions-back">
-						<div class="directions-back-button"></div>
+		<div id="directions-modal" class="directions-modal">
+			<div class="directions-search">
+				<div id="directions-back" class="directions-back">
+					<div class="directions-back-button"></div>
+				</div>
+				<div class="directions-places">
+					<div class="directions-place">
+						<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-start" placeholder="Choose starting stop"/>
 					</div>
-					<div class="directions-places">
-						<div class="directions-place">
-							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-start" placeholder="Choose starting stop"/>
-						</div>
-						<div class="directions-place">
-							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-end" placeholder="Choose end stop"/>
-						</div>
-					</div>
-					<div class="directions-options">
-						<div id="directions-options-button" class="directions-options-button"></div>
+					<div class="directions-place">
+						<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="directions-end" placeholder="Choose end stop"/>
 					</div>
 				</div>
-				<div id="directions-results" class="directions-results">
-					<div class="directions-result">
-						<div class="search-result-icon search-result-icon-location"></div>
-						<div class="search-result-text">
-							<div class="search-result-query">Your location</div>
-							<div class="search-result-location"></div>
-						</div>
-					</div>
-					<div class="search-result-separator"></div>
-					<div class="directions-result">
-						<div class="search-result-icon search-result-icon-map"></div>
-						<div class="search-result-text">
-							<div class="search-result-query">Choose on map</div>
-							<div class="search-result-location"></div>
-						</div>
-					</div>
+				<div class="directions-options">
+					<div id="directions-options-button" class="directions-options-button"></div>
 				</div>
 			</div>
+			<div id="directions-results" class="directions-results">
+
+			</div>
+		</div>
+		<div class="main-screen" id="main-screen">
 			<div id="search-modal" class="search-modal">
 				<div id="search" class="search">
 					<div id="search-outer" class="search-outer">

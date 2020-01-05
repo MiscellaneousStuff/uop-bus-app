@@ -13,6 +13,8 @@ let travelMode = "WALKING";
 let infoState = "saved";
 let infoMinimized = true;
 
+let lastDirectionsSearch = null;
+
 class App {
 	constructor() {
 		this.language = "English (United Kingdom)";
@@ -233,6 +235,7 @@ function addSearchResult(query, result, stopIndex) {
 		$("info-resize").style.display = "flex";
 		$("info").className += " info-rounded";
 		setArrivalPane(stopIndex);
+		map.clearRoutes();
 	});
 	
 	if ($(".search-result", true) != null) {
@@ -358,16 +361,9 @@ $("start-searchbox").addEventListener("keyup", function(e) {
 		
 		for (let i=0; i<stopList.length; i++) {
 			let stop = stopList[i].toLowerCase();
-			if (query == stop.slice(0, query.length)) {
+			if (query == stop.slice(0, query.length))
 				addSearchResult(stopList[i], "lol", i);
-			}
 		}
-		
-		/* DEBUG: LOCATION FINDING FUNCTION IS BROKEN. DO WE REALLY NEED IT?!?!?
-		map.textSearch(this.value, function(result) {
-			addSearchResult($("start-searchbox").value, result);
-		});
-		*/
 	} else {
 		suggestStops();
 	}
@@ -423,66 +419,66 @@ function setSchedule(schedule) {
 	}
 }
 
-let languageRadioButtons = $(".language-option-radio", true);
-for (let i=0; i<languageRadioButtons.length; i++) {
-	let languageRadioButton = languageRadioButtons[i];
-	languageRadioButton.parentNode.addEventListener("click", function() {
-		/* Visual Behaviour */
-		if (this.dataset.active != LANGUAGE) {
-			console.log(this.dataset.active);
-			$("language-apply").className = "screen-header-button screen-header-button-active";
-		} else {
-			$("language-apply").className = "screen-header-button";
-		}
-		for (let i=0; i<$(".language-option", true).length; i++) {
-			let languageOption = $(".language-option", true)[i];
-			if (languageOption != this) {
-				languageOption.className = "language-option";
-			} else {
-				languageOption.className = "language-option language-option-active";
-			}
-		}
-		let allRadios = null;
-		let node = this;
-		while (node.className != "language-options")
-			node = node.parentNode;
-		allRadios = node.getElementsByClassName("language-option-radio");
-		for (let i=0; i<allRadios.length; i++)
-			allRadios[i].className = "language-option-radio";
-		this.getElementsByClassName("language-option-radio")[0].className = "language-option-radio language-option-radio-active";
-		
-		/* Schedule Setting */
-		schedule = this.dataset.option;
-	});
-}
 
 $("directions-back").addEventListener("click", function() {
 	$("directions-modal").style.display = "none";
 	$("directions-results").style.display = "none";
 });
 
-function defaultDirectionsResults() {
-	// Location
-	// Choose on Map
-	// Previous Queries
-	// Results
+function showDirections() {
+	// Show Directions Modal
+	$("directions-modal").style.display = "block";
+	
+	// Clear Direction Searchboxes and Stopindexs
+	$("directions-start").value = "";
+	$("directions-start").stopIndex = undefined;
+	$("directions-end").value = "";
+	$("directions-end").stopIndex = undefined;
+	
+	// Show Bus Stops
+	fillDirectionStops();
 }
 
-function showDirections() {
-	$("directions-modal").style.display = "flex";
+function fillDirectionStops() {
+	clearDirectionsResults();
+	let timetable = timetables.getActiveTimetable();
+	for (let i=0; i<timetable.getStopCount() - 1; i++) {
+		addDirectionsResult(timetable.getStop(i));
+		/*
+		if (lastDirectionsSearch != null) {
+			if (i != lastDirectionsSearch.stopIndex) {
+				console.log(timetable.getStop(i));
+				addDirectionsResult(timetable.getStop(i));
+			}
+		}
+		*/
+	}
 }
+
+/*
+================================================================================
+DIRECTIONS SEARCH BOX HANDLERS
+================================================================================
+*/
 
 $("directions-start").addEventListener("click", function() {
+	lastDirectionsSearch = this;
 	$("directions-results").style.display = "flex";
+	directionsHandler();
 });
 
 $("directions-end").addEventListener("click", function() {
+	lastDirectionsSearch = this;
 	$("directions-results").style.display = "flex";
+	directionsHandler();
 });
+
+$("directions-start").addEventListener("keyup", directionsHandler);
+$("directions-end").addEventListener("keyup", directionsHandler);
 
 function directionsHandler(e) {
 	if (this.value == "") {
-		
+		fillDirectionStops();
 	} else if (this.value != "") {
 		clearDirectionsResults();
 		
@@ -490,30 +486,38 @@ function directionsHandler(e) {
 		let query = document.activeElement.value.toLowerCase().trim();
 		let stopList = activeTimetable.getStops();
 		
-		map.textSearch(this.value, function(results) {
-			for (let i=0; i<Math.min(MAX_SEARCH_RESULTS, results.length); i++) {
-				let result = results[i];
-				addDirectionsResult(query, result);
+		for (let i=0; i<stopList.length; i++) {
+			let stop = stopList[i].toLowerCase();
+			if (query == stop.slice(0, query.length)) {
+				addDirectionsResult(stopList[i]);
+				/*
+				if (lastDirectionsSearch != null) {
+					if (i != lastDirectionsSearch.stopIndex) {
+						addDirectionsResult(stopList[i]);
+					}
+				} else {
+					addDirectionsResult(stopList[i]);
+				}
+				*/
 			}
-		});
+		}
 	} else {
 		clearDirectionsResults();
 	}
 }
 
-function addDirectionsResult(query, result) {
-	console.log("Query:", query);
+function addDirectionsResult(value) {
 	let directionsResult = document.createElement("div");
 	let searchResultIcon = document.createElement("div");
 	let searchResultText = document.createElement("div");
 	let searchResultQuery = document.createElement("div");
 	let searchResultLocation = document.createElement("div");
 	
-	searchResultQuery.textContent = result.name;
-	searchResultLocation.textContent = result.formatted_address;
+	searchResultQuery.textContent = value;
+	searchResultLocation.textContent = "";
 	
 	directionsResult.className = "directions-result";
-	searchResultIcon.className = "search-result-icon search-result-icon-bus";
+	searchResultIcon.className = "search-result-icon search-result-icon-marker";
 	searchResultText.className = "search-result-text";
 	searchResultQuery.className = "search-result-query";
 	searchResultLocation.className = "search-result-location";
@@ -523,10 +527,70 @@ function addDirectionsResult(query, result) {
 	directionsResult.appendChild(searchResultIcon);
 	directionsResult.appendChild(searchResultText);
 	
-	directionsResult.result = result;
-	directionsResult.stopIndex = stopIndex;
+	// directionsResult.result = result;
+	// directionsResult.stopIndex = stopIndex;
 	directionsResult.addEventListener("click", function() {
-		console.log("hi");
+		// Clear Directions Results
+		$("directions-results").innerHTML = "";
+		
+		// Set Stops and StopIndex of current directions searchbox
+		if (lastDirectionsSearch != null) {
+			let stops = timetables.getActiveTimetable().getStops();
+			for (let i=0; i<stops.length; i++) {
+				let stop = stops[i];
+				if (stop == value) {
+					lastDirectionsSearch.stopIndex = i;
+					lastDirectionsSearch.value = value;
+					break;
+				}
+			}
+		}
+		
+		// If both directions searchbox stop indexes are set, we have a route
+		// Save this in recent routes as well
+		let startIndex = $("directions-start").stopIndex;
+		let endIndex = $("directions-end").stopIndex;
+		let timetableTitle = timetables.getActiveTimetable().getTitle();
+		let waypointCount = Math.abs(endIndex - startIndex);
+		if (endIndex < startIndex) {
+			let tempEndIndex = endIndex + timetables.getActiveTimetable().getStopPlaceCount();
+			waypointCount = tempEndIndex - startIndex - 1;
+		} else {
+			waypointCount = endIndex - startIndex;
+		}
+		if (startIndex != undefined && endIndex != undefined) {
+			// Set Route on Map
+			let start = timetables.getActiveTimetable().getStopPlace(startIndex);
+			let end = timetables.getActiveTimetable().getStopPlace(endIndex);
+			let timetable = timetables.getActiveTimetable();
+			let stopPlaceCount = timetable.getStopPlaceCount();
+			let origin = timetable.getStopPlace(0);
+			let destination;
+			if (timetable.circular)
+				destination = timetable.getStopPlace(stopPlaceCount - 1);
+			else
+				destination = origin;
+			let waypoints = [];
+			if (waypointCount > 0) {
+				let loopStart = startIndex + 1;
+				let loopEnd = endIndex - 1;
+				if (endIndex < startIndex)
+					loopEnd = endIndex + stopPlaceCount;
+				console.log(waypointCount, loopStart, loopEnd);
+				for (let i=loopStart; i<loopEnd; i++) {
+					console.log(i % stopPlaceCount);
+					waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
+				}
+			}
+			map.busDirections = map.displayRoute(start, end, "DRIVING", waypoints, "#000000");
+			
+			// Save Route as Recent Route
+			localStorage.setItem("recentRoute", JSON.stringify({title: timetableTitle, start: startIndex, end: endIndex}));
+			console.log(localStorage.getItem("recentRoute"));
+			
+			// Hide Directions Screen
+			app.hide("directions");
+		}
 	});
 	
 	if ($(".directions-result", true) != null) {
@@ -539,9 +603,6 @@ function addDirectionsResult(query, result) {
 	
 	$("directions-results").appendChild(directionsResult);
 }
-
-$("directions-start").addEventListener("keyup", directionsHandler);
-$("directions-end").addEventListener("keyup", directionsHandler);
 
 $("directions-options-button").addEventListener("click", function() {
 	$("schedule-modal").style.display = "block";

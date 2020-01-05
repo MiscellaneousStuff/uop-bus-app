@@ -599,7 +599,7 @@ MAIN - SEARCH
 	font-size: 0.9rem;
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 100%;
+	
 }
 
 .search-result {
@@ -774,6 +774,7 @@ DIRECTIONS SCREEN
 	box-sizing: border-box;
 	box-shadow: 0 1px 2px rgb(0, 0, 0, 0.2);
 	font-size: 0.9rem;
+	overflow-y: scroll;
 }
 
 .directions-result {

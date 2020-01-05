@@ -11,6 +11,10 @@ class MapComponent {
 		this.route = null;
 		this.position = null; // users location if tracking enabled
 		this.distanceMatrix = null;
+		
+		// DirectionsRenderer Containers
+		this.busDirections = null;
+		this.walkingDirections = null;
 	}
 	showWalking(stopIndex) {
 		if (this.position != null) {
@@ -117,6 +121,7 @@ class MapComponent {
 				console.log("CANT DISPLAY ROUTE: ", origin, destination);
 			}
 		});
+		return directionsRenderer;
 	}
 	setRouteCenter(routeCenter) {
 		this.routeCenter = routeCenter;
@@ -205,6 +210,14 @@ class MapComponent {
 	}
 	getCenter() {
 		return this.map.getCenter();
+	}
+	clearRoutes() {
+		if (this.busDirections != null)
+			this.busDirections.setMap(null);
+		this.busDirections = null;
+		if (this.walkingDirections != null)
+			this.walkingDirections.setMap(null);
+		this.walkingDirections = null;
 	}
 	textSearch(query, func) {
 		let request = {
