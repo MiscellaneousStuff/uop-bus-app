@@ -2,6 +2,7 @@ let app;
 
 const MAX_SEARCH_RESULTS = 6;
 const MAX_ARRIVAL_RESULTS = 3;
+const MAX_RECENT_ROUTES = 6;
 
 let results = null;
 let scheduleDatetime = null;
@@ -89,7 +90,6 @@ for (let i=0; i<helpSectionHeaders.length; i++)
 	helpSectionHeaders[i].addEventListener("click", helpSectionHeaderHandler);
 
 function helpSectionHeaderHandler() {
-	console.log("header clicked");
 	let links = this.parentNode.childNodes[3];
 	let arrow = this.childNodes[3];
 	if (links.style.display == "flex") {
@@ -173,14 +173,10 @@ function setArrivalPane(stopIndex) {
 					infoArrivalTime.textContent += " (" + availableTime.toString() + " mins)";
 					infoArrivalTime.className += " info-arrival-time-walking";
 					infoArrivalTime.addEventListener("click", function(e) {
-						console.log(this.className, this.click);
 						map.showWalking(stopIndex);
 					});
 				} else {
-					console.log(this.className);
 					infoArrivalTime.addEventListener("click", function(e) {
-						console.log(this.className, this.click);
-						
 						// Change this to travel button
 						let oldTravelButton = $(".info-arrival-time info-arrival-time-walking");
 	
@@ -444,14 +440,6 @@ function fillDirectionStops() {
 	let timetable = timetables.getActiveTimetable();
 	for (let i=0; i<timetable.getStopCount() - 1; i++) {
 		addDirectionsResult(timetable.getStop(i));
-		/*
-		if (lastDirectionsSearch != null) {
-			if (i != lastDirectionsSearch.stopIndex) {
-				console.log(timetable.getStop(i));
-				addDirectionsResult(timetable.getStop(i));
-			}
-		}
-		*/
 	}
 }
 
@@ -576,9 +564,7 @@ function addDirectionsResult(value) {
 				let loopEnd = endIndex - 1;
 				if (endIndex < startIndex)
 					loopEnd = endIndex + stopPlaceCount;
-				console.log(waypointCount, loopStart, loopEnd);
 				for (let i=loopStart; i<loopEnd; i++) {
-					console.log(i % stopPlaceCount);
 					waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
 				}
 			}
@@ -688,8 +674,42 @@ RECENT ROUTES HANDLERS
 
 $("sidebar-help-routes").addEventListener("click", function() {
 	app.show("routes");
+	setRecentRouteIcons();
+	loadRecentRoutes();
 });
 
 $("routes-back").addEventListener("click", function() {
 	app.hide("routes");
 });
+
+function setRecentRouteIcons() {
+	let icons = $(".routes-section-desc-icon", true);
+	console.log(icons);
+	for (let i=0; i<icons.length; i++) {
+		let icon = icons[i];
+		icon.addEventListener("click", function() {
+			console.log("show route type");
+			app.show("routeType");
+		});
+	}
+}
+
+function loadRecentRoutes() {
+	if (localStorage.hasOwnProperty("recent-routes")) {
+		let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+	}
+}
+
+/*
+================================================================================
+RECENT ROUTE TYPE MODAL HANDLERS
+================================================================================
+*/
+
+let routeTypeOptions = $(".route-type-popup-option", true);
+for (let i=0; i<routeTypeOptions.length; i++) {
+	let option = routeTypeOptions[i];
+	option.addEventListener("click", function() {
+		app.hide("routeType");
+	});
+}

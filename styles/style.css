@@ -51,7 +51,7 @@ POPUP
 	width: 18rem;
 	height: 20rem;
 	background: #FFF;
-	border-radius: 2px;
+	border-radius: 5px;
 	padding: 1.5rem;
 	box-sizing: border-box;
 }
@@ -867,6 +867,8 @@ MAIN - INFO
 }
 
 .info-section-trips {
+	border: 2px solid #FFF;
+	border-radius: 100%;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	display: flex;
@@ -896,7 +898,7 @@ MAIN - INFO
 
 .info-section-trip-image-work {
 	background: url('../images/work.svg');
-	background-size: 2rem 2rem;
+	background-size: 1.5rem 1.5rem;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-color: #4285F4;
@@ -910,9 +912,25 @@ MAIN - INFO
 	background-color: #4285F4;
 }
 
+.info-section-trip-image-edit {
+	background: url('../images/edit.svg');
+	background-size: 1.5rem 1.5rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #4285F4;
+}
+
 .info-section-trip-image-gym {
 	background: url('../images/gym.svg');
-	background-size: 2rem 2rem;
+	background-size: 1.5rem 1.5rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #4285F4;
+}
+
+.info-section-trip-image-uni {
+	background: url('../images/uni.svg');
+	background-size: 1.5rem 1.5rem;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-color: #4285F4;
@@ -1150,6 +1168,7 @@ ROUTES SCREEN
 */
 
 .routes-sections {
+	background: rgba(0, 0, 0, 0.1);
 	flex-grow: 1;
 	overflow-y: auto;
 }
@@ -1157,22 +1176,80 @@ ROUTES SCREEN
 .routes-section {
 	display: flex;
 	flex-direction: column;
+	margin: 1rem;
+	box-shadow: 0 2px 6px rgb(0, 0, 0, 0.3);
+	background-color: #FFF;
+	margin-bottom: 0;
 }
 
 .routes-section-map {
 	background: rgba(0, 0, 0, 0.5);
-	height: 7rem;
+	height: 120px;
 }
 
 .routes-section-desc {
 	display: flex;
 	flex-direction: row;
-	padding: 1rem;
+	padding: 0.5rem;
 	align-items: center;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 }
 
 .routes-section-desc-stops {
 	display: flex;
 	flex-direction: column;
+}
+
+.routes-section-desc-icon {
+	margin-top: -1rem;
+	margin-right: 0.5rem;
+	width: 3rem;
+	height: 3rem;
+	background: #FFF;
+	border-radius: 100%;
+	border: 2px solid #FFF;
+}
+
+.routes-section-desc-start {
+	font-size: 0.9rem;
+}
+
+.routes-section-desc-end {
+	font-size: 0.78rem;
+	color: #888888;
+}
+
+/*
+================================================================================
+ROUTE TYPE MODAL
+================================================================================
+*/
+
+.route-type-modal {
+	z-index: 99999;
+}
+
+.route-type-popup {
+	height: 25rem;
+}
+
+.route-type-popup-option {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 0;
+	margin-bottom: 1rem;
+}
+
+.route-type-popup-option .info-section-trip-image {
+	margin-bottom: 0;
+	width: 3rem;
+	height: 3rem;
+}
+.route-type-popup-option-label {
+	margin-left: 1.5rem;
+}
+
+.route-type-popup-option-last {
+	margin-bottom: 0;
 }

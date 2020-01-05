@@ -34,7 +34,6 @@ class MapComponent {
 		return this.route;
 	}
 	getClosestStop() {
-		console.log(travelMode, map.position);
 		this.distanceMatrixService.getDistanceMatrix({
 			origins: [map.position],
 			destinations: timetables.getActiveTimetable().getStopPlaces(),
@@ -72,7 +71,6 @@ class MapComponent {
 	getCurrentLocation(locationControl) {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
-				console.log(position.coords.latitude, position.coords.longitude);
 				map.placeMarker(null, -1, markerHandler, {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
@@ -142,6 +140,8 @@ class MapComponent {
 		this.routeCenter = routeCenter;
 	}
 	updateRouteCenter() {
+		if (this.routeCenter != undefined || this.routeCenter != null)
+			console.log(this.routeCenter.lat(), this.routeCenter.lng());
 		this.map.setCenter(this.routeCenter);
 	}
 	initControls() {
@@ -235,7 +235,7 @@ class MapComponent {
 								console.log("CANT FIND QUERIED LOCATION");
 							}
 						} else {
-							console.log("GEOCODER'S FUCKED ITSELF: " + status, requestObject)
+							console.log("GEOCODER ERROR: " + status, requestObject)
 						}
 					});
 					return map.markers[map.markers.length - 1];
@@ -280,7 +280,6 @@ function showStops() {
 	let timetable = timetables.getActiveTimetable();
 	let stopPlaceCount = timetable.getStopPlaceCount();
 	for (let i=0; i<stopPlaceCount; i++) {
-		console.log("[SHOW STOP]", i);
 		let stopPlace = timetable.getStopPlace(i);
 		let marker = map.placeMarker({"address": stopPlace}, i, markerHandler, null, false, false);
 	}
@@ -326,7 +325,6 @@ class LocationControl {
 }
 
 function markerHandler() {
-	console.log(this, this.id);
 	if (this.id != -1) {
 		infoState = "station";
 		infoMinimized = false;

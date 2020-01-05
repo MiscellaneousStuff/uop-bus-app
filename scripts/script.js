@@ -46,11 +46,12 @@ window.onload = function() {
 	let guideScreen			= new Screen("guide", $("guide-screen"));
 	let routesScreen		= new Screen("routes", $("routes-screen"));
 	let directionsScreen	= new Screen("directions", $("directions-modal"));
+	let routeTypeScreen		= new Screen("routeType", $("route-type-modal"));
 	
 	let sidebar = new Sidebar($("sidebar-modal"));
 	
 	app.addScreens(mainScreen, languageScreen, settingsScreen,
-	helpScreen, guideScreen, routesScreen, directionsScreen);
+	helpScreen, guideScreen, routesScreen, directionsScreen, routeTypeScreen);
 	app.setSidebar(sidebar);
 	
 	app.show("main");
