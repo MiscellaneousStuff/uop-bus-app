@@ -51,8 +51,22 @@ class MapComponent {
 					closestStop = i;
 				}
 			}
-			console.log(closestStop, timetables.getActiveTimetable().getStop(closestStop));
-			map.markers[closestStop].setIcon("images/bus-marker-selected.png");
+			for (let i=0; i<stopPlaceCount; i++) {
+				let marker = map.markers[i];
+				let end = timetables.getActiveTimetable().getStopPlace(closestStop);
+				if (marker.id == closestStop) {
+					// Change Marker Icon
+					marker.setIcon("images/bus-marker-selected.png");
+					
+					// Set Panel to Closest Stop
+					infoState = "station";
+					infoMinimized = false;
+					setArrivalPane(closestStop);
+					
+					// Set Walking Directions
+					map.walkingDirections = map.displayRoute(map.position, end, "WALKING", [], "#4285F4");
+				}
+			}
 		});
 	}
 	getCurrentLocation(locationControl) {
@@ -67,6 +81,7 @@ class MapComponent {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
 				};
+				showStops();
 				map.getClosestStop();
 			});
 			locationControl.className = "map-button map-button-GPS";
@@ -154,6 +169,10 @@ class MapComponent {
 		}
 		return true;
 	}
+	/*
+		LEGAL:
+		- GOOGLE TERMS OF SERVICE SAYS YOU CAN CACHE THIS FOR 30 DAYS MAXIMUM
+	*/
 	placeMarker(requestObject, id, handler, latlng=null, zoom=false, center=false) {
 		if (this.isUniqueMarker(id)) {
 			if (latlng != null) {
@@ -170,34 +189,57 @@ class MapComponent {
 				marker.id = id;
 				google.maps.event.addListener(marker, 'click', handler);
 				map.markers.push(marker);
-			} else {
-				this.geocoder.geocode(requestObject, function(results, status) {
-					if (status == "OK") {
-						if (results[0]) {
-							let marker = new google.maps.Marker({
-								map: map.map,
-								position: results[0].geometry.location,
-								animation: google.maps.Animation.DROP,
-								draggable: false,
-								preserveViewport: true,
-								icon: {
-									url: "images/bus-marker-base.png"
-								}
-							})
-							if (center) {
-								map.map.setCenter(marker.position);
-							}
-							marker.id = id;
-							google.maps.event.addListener(marker, 'click', handler);
-							map.markers.push(marker);
-						} else {
-							console.log("CANT FIND FUCK ALL");
+			} else { // if (typeof(requestObject.address) == "string") {
+				// Check if we've saved the geocode so we don't spam the Google Service
+				if (localStorage.hasOwnProperty(requestObject.address)) {
+					let marker = new google.maps.Marker({
+						map: map.map,
+						position: JSON.parse(localStorage.getItem(requestObject.address)),
+						animation: google.maps.Animation.DROP,
+						draggable: false,
+						preserveViewport: true,
+						icon: {
+							url: "images/bus-marker-base.png"
 						}
-					} else {
-						console.log("GEOCODER'S FUCKED ITSELF: " + status, requestObject)
+					})
+					if (center) {
+						map.map.setCenter(marker.position);
 					}
-				});
-				return map.markers[map.markers.length - 1];
+					marker.id = id;
+					google.maps.event.addListener(marker, 'click', handler);
+					map.markers.push(marker);
+				} else {
+					// Get geocode if it hasn't been saved
+					this.geocoder.geocode(requestObject, function(results, status) {
+						if (status == "OK") {
+							if (!localStorage.hasOwnProperty(requestObject.address))
+								localStorage.setItem(requestObject.address, JSON.stringify(results[0].geometry.location));
+							if (results[0]) {
+								let marker = new google.maps.Marker({
+									map: map.map,
+									position: results[0].geometry.location,
+									animation: google.maps.Animation.DROP,
+									draggable: false,
+									preserveViewport: true,
+									icon: {
+										url: "images/bus-marker-base.png"
+									}
+								})
+								if (center) {
+									map.map.setCenter(marker.position);
+								}
+								marker.id = id;
+								google.maps.event.addListener(marker, 'click', handler);
+								map.markers.push(marker);
+							} else {
+								console.log("CANT FIND QUERIED LOCATION");
+							}
+						} else {
+							console.log("GEOCODER'S FUCKED ITSELF: " + status, requestObject)
+						}
+					});
+					return map.markers[map.markers.length - 1];
+				}
 			}
 			if (zoom)
 				this.map.setZoom(14);
@@ -238,6 +280,7 @@ function showStops() {
 	let timetable = timetables.getActiveTimetable();
 	let stopPlaceCount = timetable.getStopPlaceCount();
 	for (let i=0; i<stopPlaceCount; i++) {
+		console.log("[SHOW STOP]", i);
 		let stopPlace = timetable.getStopPlace(i);
 		let marker = map.placeMarker({"address": stopPlace}, i, markerHandler, null, false, false);
 	}
@@ -283,6 +326,7 @@ class LocationControl {
 }
 
 function markerHandler() {
+	console.log(this, this.id);
 	if (this.id != -1) {
 		infoState = "station";
 		infoMinimized = false;

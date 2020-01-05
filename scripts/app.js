@@ -582,6 +582,11 @@ function addDirectionsResult(value) {
 					waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
 				}
 			}
+			
+			// Hide previous routes
+			map.clearRoutes();
+			
+			// Show our new route
 			map.busDirections = map.displayRoute(start, end, "DRIVING", waypoints, "#000000");
 			
 			// Save Route as Recent Route
