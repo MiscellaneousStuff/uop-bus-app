@@ -188,10 +188,12 @@ class MapComponent {
 		directionsControlDiv.index = 1;
 		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(directionsControlDiv);
 		
+		/*
 		let locationControlDiv = document.createElement("div");
 		let locationControl = new LocationControl(locationControlDiv, this.map);
 		locationControlDiv.index = 1;
 		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationControlDiv);
+		*/
 		
 		// Redundant button?
 		let stopsControlDiv = document.createElement("div");
