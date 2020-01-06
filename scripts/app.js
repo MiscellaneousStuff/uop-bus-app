@@ -8,14 +8,14 @@ const KEY = "AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g";
 let results = null;
 let scheduleDatetime = null;
 let liveTime;
-let LANGUAGE = "English (United Kingdom)";
-
 let travelMode = "WALKING";
 
 let infoState = "saved";
 let infoMinimized = true;
 
 let lastDirectionsSearch = null;
+
+let routePassed = null;
 
 class App {
 	constructor() {
@@ -291,20 +291,20 @@ $("info-minimized").addEventListener("click", function() {
 		$("info").className += " info-rounded";
 		// $("info-arrival").style.display = "flex";
 		
-		// Update header if there are saved routes
-		if (getRecentRoutes.length > 0) {
-			$(".info-section-header").textContent = "Saved Routes";
-		}
-		
-		// Clear old saved routes
-		// $(".info-section-trips").innerHTML = "";
+		// Clear old saved routes and header default to no saved routes
+		// Will be changed in loop if any saved routes found
+		$(".info-section-trips").innerHTML = "";
+		$(".info-section-header").textContent = "No Saved Routes";
 		
 		// Add new ones
 		let recentRoutes = getRecentRoutes();
 		if (recentRoutes != null) {
 			for (let i=0; i<recentRoutes.length; i++) {
 				let recentRoute = recentRoutes[i];
-			
+				if (recentRoute.type != "edit") {
+					$(".info-section-header").textContent = "Saved Routes";
+					addInfoSavedRoute(recentRoute);
+				}
 			}
 		}
 	} else {
@@ -314,15 +314,8 @@ $("info-minimized").addEventListener("click", function() {
 	}
 });
 
-/*
-<div class="info-section-trip">
-	<div class="info-section-trip-image
-	info-section-trip-image-uni"></div>
-	<div class="info-section-trip-name">Uni</div>
-</div>
-*/
-
-function addInfoSavedRoute(type) {
+function addInfoSavedRoute(route) {
+	let type = route.type;
 	// Get component label and class type
 	let label = type[0].toUpperCase() + type.slice(1, type.length);
 	let classType = type;
@@ -341,10 +334,17 @@ function addInfoSavedRoute(type) {
 	// Set contents of elements
 	infoSectionTripName.textContent = label;
 	
+	// Show Route
+	infoSectionTrip.addEventListener("click", function() {
+		setDirections(route.start, route.end);
+	});
+	
 	// Append elements to each other
 	$(".info-section-trips").appendChild(infoSectionTrip);
 	infoSectionTrip.appendChild(infoSectionTripImage);
 	infoSectionTrip.appendChild(infoSectionTripName);
+	
+	return infoSectionTrip;
 }
 
 $("info-resize").addEventListener("click", function() {
@@ -591,42 +591,8 @@ function addDirectionsResult(value) {
 		let startIndex = $("directions-start").stopIndex;
 		let endIndex = $("directions-end").stopIndex;
 		let timetableTitle = timetables.getActiveTimetable().getTitle();
-		let waypointCount = Math.abs(endIndex - startIndex);
-		if (endIndex < startIndex) {
-			let tempEndIndex = endIndex + timetables.getActiveTimetable().getStopPlaceCount();
-			waypointCount = tempEndIndex - startIndex - 1;
-		} else {
-			waypointCount = endIndex - startIndex;
-		}
 		if (startIndex != undefined && endIndex != undefined) {
-			// Set Route on Map
-			let start = timetables.getActiveTimetable().getStopPlace(startIndex);
-			let end = timetables.getActiveTimetable().getStopPlace(endIndex);
-			let timetable = timetables.getActiveTimetable();
-			let stopPlaceCount = timetable.getStopPlaceCount();
-			let origin = timetable.getStopPlace(0);
-			let destination;
-			if (timetable.circular)
-				destination = timetable.getStopPlace(stopPlaceCount - 1);
-			else
-				destination = origin;
-			let waypoints = [];
-			if (waypointCount > 0) {
-				let loopStart = startIndex + 1;
-				let loopEnd = endIndex - 1;
-				if (endIndex < startIndex)
-					loopEnd = endIndex + stopPlaceCount;
-				for (let i=loopStart; i<loopEnd; i++) {
-					waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
-				}
-			}
-			
-			// Hide previous routes
-			map.clearRoutes();
-			map.clearMainRoute();
-			
-			// Show our new route
-			map.busDirections = map.displayRoute(start, end, "DRIVING", waypoints, "#800080");
+			setDirections(startIndex, endIndex);
 			
 			// Save Route as Recent Route
 			let route = {
@@ -635,8 +601,6 @@ function addDirectionsResult(value) {
 				end: endIndex,
 				type: "edit" // Default, removable,
 			}
-			if (localStorage.hasOwnProperty("recent-routes"))
-				console.log("recent-routes before:", JSON.parse(localStorage.getItem("recent-routes")));
 			addRecentRoute(route);
 			// console.log("recent-routes after:", JSON.parse(localStorage.getItem("recent-routes")));
 			
@@ -669,6 +633,47 @@ $("guide-screen-button-nav").addEventListener("click", function() {
 	// Hide Guide Screen
 	app.hide("guide");
 });
+
+function setDirections(startIndex, endIndex) {
+	// Set Route on Map
+	let timetableTitle = timetables.getActiveTimetable().getTitle();
+	let waypointCount = Math.abs(endIndex - startIndex);
+	if (endIndex < startIndex) {
+		let tempEndIndex = endIndex + timetables.getActiveTimetable().getStopPlaceCount();
+		waypointCount = tempEndIndex - startIndex - 1;
+	} else {
+		waypointCount = endIndex - startIndex;
+	}
+	let start = timetables.getActiveTimetable().getStopPlace(startIndex);
+	let end = timetables.getActiveTimetable().getStopPlace(endIndex);
+	let timetable = timetables.getActiveTimetable();
+	let stopPlaceCount = timetable.getStopPlaceCount();
+	let origin = timetable.getStopPlace(0);
+	let destination;
+	if (timetable.circular)
+		destination = timetable.getStopPlace(stopPlaceCount - 1);
+	else
+		destination = origin;
+	let waypoints = [];
+	if (waypointCount > 0) {
+		let loopStart = startIndex + 1;
+		let loopEnd = endIndex - 1;
+		if (endIndex < startIndex)
+			loopEnd = endIndex + stopPlaceCount;
+		for (let i=loopStart; i<loopEnd; i++) {
+			waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
+		}
+	}
+	
+	// Hide previous routes
+	map.clearRoutes();
+	
+	// Show our new route
+	map.routes.push(map.displayRoute(start, end, "DRIVING", waypoints, "#800080"));// "#800080");
+	
+	// Show reset button on map
+	$("stops-button").style.display = "block";
+}
 
 /*
 ================================================================================
@@ -733,6 +738,11 @@ RECENT ROUTES HANDLERS
 ================================================================================
 */
 
+$("routes-clear").addEventListener("click", function() {
+	localStorage.setItem("recent-routes", JSON.stringify([]));
+	loadRecentRoutes();
+});
+
 $("sidebar-help-routes").addEventListener("click", function() {
 	loadRecentRoutes();
 	app.show("routes");
@@ -742,37 +752,14 @@ $("routes-back").addEventListener("click", function() {
 	app.hide("routes");
 });
 
-/*
-<div class="routes-section">
-	<div class="routes-section-map" style="background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=50.79105,-1.077&zoom=13&size=288x120&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g')">
-	</div>
-	<div class="routes-section-desc">
-		<div class="routes-section-desc-icon">
-			<div class="info-section-trip">
-				<div class="info-section-trip-image info-section-trip-image-edit"></div>
-			</div>
-		</div>
-		<div class="routes-section-desc-stops">
-			<div class="routes-section-desc-start">
-				University of Portsmouth
-			</div>
-			<div class="routes-section-desc-end">
-				to Festing Hotel
-			</div>
-		</div>
-	</div>
-</div>
-*/
-
 function loadRecentRoutes() {
 	if (localStorage.hasOwnProperty("recent-routes")) {
 		// Get recent routes if user has recent routes
-		let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+		let recentRoutes = getRecentRoutes();
+		recentRoutes.reverse();
 		
 		// Clear routes sections
 		$(".routes-sections").innerHTML = "";
-		
-		console.log(recentRoutes[0].start);
 		
 		// Loop through recent routes if they exist
 		for (let i=0; i<recentRoutes.length; i++) {
@@ -813,18 +800,17 @@ function loadRecentRoutes() {
 			routesSectionMap.style.className = "";
 			routesSectionDescStart.textContent = startStop;
 			routesSectionDescEnd.textContent = "to " + endStop;
-			console.log(startStop, endStop);
+			routesSectionDescIcon.route = recentRoute;
 			
 			// Set routes section and icon click handlers here
 			routesSection.addEventListener("click", function(e) {
-				if (e.target === this) {
-					app.hide("routes");
-					// Set the directions route here, make generic function which is
-					// shared with the directions modal to set the route on the map
-					app.show("main");
-				}
+				app.hide("routes");
+				setDirections(start, end);
+				app.hideSidebar();
+				app.show("main");
 			});
 			routesSectionDescIcon.addEventListener("click", function() {
+				routePassed = this.route;
 				app.show("routeType");
 			});
 			
@@ -852,6 +838,15 @@ let routeTypeOptions = $(".route-type-popup-option", true);
 for (let i=0; i<routeTypeOptions.length; i++) {
 	let option = routeTypeOptions[i];
 	option.addEventListener("click", function() {
+		let index = getRouteIndex(routePassed.start, routePassed.end);
+		if (index != -1) {
+			let routes = getRecentRoutes();
+			routes[index].type = this.getAttribute("data-option");
+			console.log(this.getAttribute("data-option"));
+			localStorage.setItem("recent-routes", JSON.stringify(routes));
+		}
+		loadRecentRoutes();
+		
 		app.hide("routeType");
 		app.show("routes");
 	});
@@ -867,6 +862,20 @@ RECENT ROUTE STORAGE
 // as edit are removed when new recent routes are added, only saved routes don't
 // get overwritten. There's a maximum of 4 saved routes and 4 recent routes for
 // a total of 8 routes in the recent route screen in total.
+
+function getRouteIndex(start, end) {
+	let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+	let index = -1;
+	for (let i=0; i<recentRoutes.length; i++) {
+		let recentRoute = recentRoutes[i];
+		let recentStart = recentRoute.start;
+		let recentEnd = recentRoute.end;
+		if (recentStart == start & recentEnd == end) {
+			return i;
+		}
+	}
+	return index;
+}
 
 // -----------------------------------------------------------------------------
 // Returns a list of route objects
@@ -885,7 +894,6 @@ function addRecentRoute(route) {
 	
 	// Get recent / saved routes
 	let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
-	console.log(recentRoutes);
 	
 	// Check if route exists
 	for (let i=0; i<recentRoutes.length; i++) {
@@ -896,8 +904,12 @@ function addRecentRoute(route) {
 			return false;
 	}
 	
-	// Add route if it doesn't exist
-	recentRoutes.push(route);
-	localStorage.setItem("recent-routes", JSON.stringify(recentRoutes));
-	return true;
+	// Add route if it doesn't exist and recent route limit hasn't been reached
+	if (recentRoutes.length != MAX_RECENT_ROUTES) {
+		recentRoutes.push(route);
+		localStorage.setItem("recent-routes", JSON.stringify(recentRoutes));
+		return true;
+	} else {
+		return false;
+	}
 }

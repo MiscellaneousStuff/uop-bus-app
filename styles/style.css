@@ -219,7 +219,7 @@ SCREENS
 	flex-direction: column;
 	height: 100%;
 	width: 100%;
-	z-index: 90000;
+	z-index: 0;
 }
 
 .screen {
@@ -268,6 +268,15 @@ SCREENS
 	width: 2rem;
 	height: 1rem;
 	background: url('../images/arrow.png');
+	background-size: 1.5rem 1.5rem;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.screen-header-button-clear {
+	width: 2rem;
+	height: 1rem;
+	background: url('../images/clear.svg');
 	background-size: 1.5rem 1.5rem;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -1038,9 +1047,9 @@ MAP - CONTROLS
 
 .map-button-stops {
 	display: none;
-	background: url('../images/marker.svg');
+	background: url('../images/reset.svg');
 	background-color: #FFF;
-	background-size: 1.25rem 1.25rem;
+	background-size: 1.5rem 1.5rem;
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -1178,10 +1187,6 @@ GUIDE SCREEN
 ROUTES SCREEN
 ================================================================================
 */
-
-.routes-screen {
-	
-}
 
 .routes-sections {
 	background: rgba(0, 0, 0, 0.1);

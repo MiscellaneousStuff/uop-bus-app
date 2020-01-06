@@ -13,15 +13,13 @@ class MapComponent {
 		this.distanceMatrix = null;
 		
 		// DirectionsRenderer Containers
-		this.busDirections = null;
-		this.walkingDirections = null;
-		this.mainRoute = null;
+		this.routes = [];
 	}
 	showWalking(stopIndex) {
 		if (this.position != null) {
 			let origin = this.position;
 			let destination = timetables.getActiveTimetable().getStopPlace(stopIndex);
-			this.displayRoute(origin, destination, travelMode, [], "#0000FF");
+			this.routes.push(this.displayRoute(origin, destination, travelMode, [], "#0000FF"));
 		}
 	}
 	addMarker(marker) {
@@ -64,7 +62,7 @@ class MapComponent {
 					setArrivalPane(closestStop);
 					
 					// Set Walking Directions
-					map.walkingDirections = map.displayRoute(map.position, end, "WALKING", [], "#4285F4");
+					map.routes.push(map.displayRoute(map.position, end, "WALKING", [], "#4285F4"));
 				}
 			}
 		});
@@ -157,10 +155,6 @@ class MapComponent {
 				map.setRoute(route);
 				directionsRenderer.setDirections(response);
 				
-				/*
-				map.map.setCenter(route.bounds.getCenter());
-				*/
-				
 				map.setRouteCenter(route.bounds.getCenter());
 				map.updateRouteCenter();
 			} else {
@@ -173,8 +167,6 @@ class MapComponent {
 		this.routeCenter = routeCenter;
 	}
 	updateRouteCenter() {
-		if (this.routeCenter != undefined || this.routeCenter != null)
-			console.log(this.routeCenter.lat(), this.routeCenter.lng());
 		this.map.setCenter(this.routeCenter);
 	}
 	initControls() {
@@ -222,7 +214,7 @@ class MapComponent {
 				marker.id = id;
 				google.maps.event.addListener(marker, 'click', handler);
 				map.markers.push(marker);
-			} else { // if (typeof(requestObject.address) == "string") {
+			} else {
 				// Check if we've saved the geocode so we don't spam the Google Service
 				if (localStorage.hasOwnProperty(requestObject.address)) {
 					let marker = new google.maps.Marker({
@@ -287,17 +279,10 @@ class MapComponent {
 		return this.map.getCenter();
 	}
 	clearRoutes() {
-		if (this.busDirections != null)
-			this.busDirections.setMap(null);
-		this.busDirections = null;
-		if (this.walkingDirections != null)
-			this.walkingDirections.setMap(null);
-		this.walkingDirections = null;
-	}
-	clearMainRoute() {
-		if (this.mainRoute != null)
-			this.mainRoute.setMap(null);
-		this.mainRoute = null;
+		for (let i=0; i<this.routes.length; i++) {
+			this.routes[i].set("directions", null);
+		}
+		this.routes = [];
 	}
 	textSearch(query, func) {
 		let request = {
@@ -322,6 +307,7 @@ function showStops() {
 		let marker = map.placeMarker({"address": stopPlace}, i, markerHandler, null, false, false);
 	}
 	map.updateRouteCenter();
+	// showRoute();
 }
 
 class DirectionsControl {
@@ -345,8 +331,9 @@ class StopsControl {
 		controlUI.addEventListener("click", function() {
 			showStops();
 			$("stops-button").style.display = "none";
+			map.clearRoutes();
+			showRoute();
 		});
-		map.clearRoutes();
 	}
 }
 

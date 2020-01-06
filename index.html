@@ -68,31 +68,31 @@
 					<div class="popup-header">
 						Set route type
 					</div>
-					<div class="popup-option route-type-popup-option">
+					<div class="popup-option route-type-popup-option" data-option="home">
 						<div class="info-section-trip-image info-section-trip-image-home"></div>
 						<div class="route-type-popup-option-label">
 							Home
 						</div>
 					</div>
-					<div class="popup-option route-type-popup-option">
+					<div class="popup-option route-type-popup-option" data-option="work">
 						<div class="info-section-trip-image info-section-trip-image-work"></div>
 						<div class="route-type-popup-option-label">
 							Work
 						</div>
 					</div>
-					<div class="popup-option route-type-popup-option">
+					<div class="popup-option route-type-popup-option" data-option="gym">
 						<div class="info-section-trip-image info-section-trip-image-gym"></div>
 						<div class="route-type-popup-option-label">
 							Gym
 						</div>
 					</div>
-					<div class="popup-option route-type-popup-option">
+					<div class="popup-option route-type-popup-option" data-option="uni">
 						<div class="info-section-trip-image info-section-trip-image-uni"></div>
 						<div class="route-type-popup-option-label">
 							Uni
 						</div>
 					</div>
-					<div class="popup-option route-type-popup-option">
+					<div class="popup-option route-type-popup-option" data-option="edit">
 						<div class="info-section-trip-image"></div>
 						<div class="route-type-popup-option-label route-type-popup-option-last">
 							None
@@ -148,28 +148,13 @@
 				<div class="screen-header-title">
 					Recent Routes
 				</div>
+				<div id="routes-clear" class="screen-header-button-clear"></div>
 			</div>
 			<div class="routes-sections">
 				<!--
 				<div class="routes-section">
 					<div class="routes-section-map" style="background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=50.79105,-1.077&zoom=13&size=288x120&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g')">
 					</div>
-					<div class="routes-section-desc">
-						<div class="routes-section-desc-icon">
-							<div class="info-section-trip">
-								<div class="info-section-trip-image info-section-trip-image-edit"></div>
-							</div>
-						</div>
-						<div class="routes-section-desc-stops">
-							<div class="routes-section-desc-start">
-								University of Portsmouth
-							</div>
-							<div class="routes-section-desc-end">
-								to Festing Hotel
-							</div>
-						</div>
-					</div>
-				</div>
 				-->
 			</div>
 		</div>
@@ -278,26 +263,7 @@
 				<div class="info-section" id="info-quick">
 					<div class="info-section-header">No Saved Routes</div>
 					<div class="info-section-trips">
-						<div class="info-section-trip">
-							<div class="info-section-trip-image
-							info-section-trip-image-home"></div>
-							<div class="info-section-trip-name">Home</div>
-						</div>
-						<div class="info-section-trip">
-							<div class="info-section-trip-image
-							info-section-trip-image-work"></div>
-							<div class="info-section-trip-name">Work</div>
-						</div>
-						<div class="info-section-trip">
-							<div class="info-section-trip-image
-							info-section-trip-image-gym"></div>
-							<div class="info-section-trip-name">Gym</div>
-						</div>
-						<div class="info-section-trip">
-							<div class="info-section-trip-image
-							info-section-trip-image-uni"></div>
-							<div class="info-section-trip-name">Uni</div>
-						</div>
+
 					</div>
 				</div>
 				<div class="info-separator"></div>
@@ -319,8 +285,8 @@
 		<script src="scripts/swipe.js"></script>
 		<script src="scripts/data.js"></script>
 		<script src="scripts/timetable.js"></script>
-		<script src="scripts/map.js"></script>
 		<script src="scripts/app.js"></script>
+		<script src="scripts/map.js"></script>
 		<script src="scripts/script.js"></script>
 		<script async defer
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g&callback=initMap&libraries=places">

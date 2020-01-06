@@ -21,7 +21,7 @@ function showRoute() {
 	let waypoints = [];
 	for (let i=1; i<stopPlaceCount-1; i++)
 		waypoints.push({"location": timetable.getStopPlace(i)});
-	map.mainRoute = map.displayRoute(origin, destination, "DRIVING", waypoints, "#800080");
+	map.routes.push(map.displayRoute(origin, destination, "DRIVING", waypoints, "#800080"));
 }
 
 /*
