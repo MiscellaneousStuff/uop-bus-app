@@ -47,7 +47,7 @@
 						Change time of travel
 					</div>
 					<div class="guide-screen-fragment-description">
-						Set time of travel to now, arrival time or departure time
+						Set time of travel now or a later departure time
 					</div>
 				</div>
 			</div>
@@ -105,13 +105,8 @@
 							<div class="popup-radio-button-dot"></div>
 						</div>Depart At
 					</div>
-					<div data-option="arrive by" class="popup-option">
-						<div class="popup-radio-button">
-							<div class="popup-radio-button-dot"></div>
-						</div>Arrive By
-					</div>
 					<div id="schedule-datetime" class="popup-option popup-option-datetime">
-						
+						<!-- Time filled here -->
 					</div>
 					<div class="popup-buttons">
 						<div class="popup-button" id="popup-cancel">Cancel</div>
@@ -120,15 +115,57 @@
 				</div>
 			</div>
 		</div>
-		<div id="datetime-modal" class="modal datetime-modal">
+		<div id="datetime-modal" class="modal">
 			<div class="popup-container">
-				<div id="datetime-popup" class="popup">
-					<div id="mini-cal" class="mini-cal">
-						
+				<div id="datetime-popup" class="popup" style="height: 10rem">
+					<div class="popup-header">
+						Choose departure time
+					</div>
+					<div class="popup-time">
+						<select class="time-combo" id="time-hour">
+							<option>0</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+							<option>11</option>
+							<option>12</option>
+							<option>13</option>
+							<option>14</option>
+							<option>15</option>
+							<option>16</option>
+							<option>17</option>
+							<option>18</option>
+							<option>19</option>
+							<option>20</option>
+							<option>21</option>
+							<option>22</option>
+							<option>23</option>
+						</select>
+						<select class="time-combo" id="time-minute">
+							<option>0</option>
+							<option>5</option>
+							<option>10</option>
+							<option>15</option>
+							<option>20</option>
+							<option>25</option>
+							<option>30</option>
+							<option>35</option>
+							<option>40</option>
+							<option>45</option>
+							<option>50</option>
+							<option>55</option>
+						</select>
 					</div>
 					<div class="popup-buttons">
-						<div class="popup-button" id="popup-cancel">Cancel</div>
-						<div class="popup-button popup-button-confirm" id="popup-confirm">OK</div>
+						<div class="popup-button" id="datetime-popup-cancel">Cancel</div>
+						<div class="popup-button popup-button-confirm" id="datetime-popup-confirm">OK</div>
 					</div>
 				</div>
 			</div>

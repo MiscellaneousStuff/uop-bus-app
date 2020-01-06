@@ -49,7 +49,7 @@ POPUP
 	display: flex;
 	flex-direction: column;
 	width: 18rem;
-	height: 20rem;
+	height: 17rem;
 	background: #FFF;
 	border-radius: 5px;
 	padding: 1.5rem;
@@ -99,7 +99,7 @@ POPUP
 }
 
 .popup-option-datetime {
-	margin-left: 3rem;
+	margin-left: 3.1rem;
 	color: rgba(0, 0, 0, 0.5);
 }
 
@@ -1368,4 +1368,36 @@ MINICAL
 	background: #1A73E8;
 	border-radius: 100%;
 	color: #FFF;
+}
+
+/*
+================================================================================
+MISC
+================================================================================
+*/
+
+.popup-time {
+	display: flex;
+	flex-direction: row;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.popup-time input[type=number] {
+	padding: 1rem;
+	border: none;
+	border-right: 1px solid black;
+	outline: none;
+	width: 4rem;
+	font-size: 1.2rem;
+}
+
+.time-combo {
+	background: rgba(0, 0, 0, 0);
+	padding: 0.5rem;
+	/* border-radius: 5px; */
+	margin-right: 1rem;
+	outline: none;
+	border: 0;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }

@@ -6,8 +6,7 @@ const MAX_RECENT_ROUTES = 8;
 const KEY = "AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g";
 
 let results = null;
-let scheduleDatetime = null;
-let liveTime;
+let scheduleDatetime = new Date();
 let travelMode = "WALKING";
 
 let infoState = "saved";
@@ -16,6 +15,9 @@ let infoMinimized = true;
 let lastDirectionsSearch = null;
 
 let routePassed = null;
+
+let schedule = null;
+let lastChosenSchedule = "leave now";
 
 class App {
 	constructor() {
@@ -169,7 +171,7 @@ function setArrivalPane(stopIndex) {
 				infoArrivalTime.className = "info-arrival-time"
 				infoArrivalTime.textContent = arrivalTimes[i];
 				if (i == 0) {
-					let availableTime = Timetable.getDiff(arrivalTimes[0], getTime()) ; // DEBUG: REPLACE THIS WITH ESTIMATED WALKING TIME
+					let availableTime = Timetable.getDiff(arrivalTimes[0], getTime(scheduleDatetime)) ; // DEBUG: REPLACE THIS WITH ESTIMATED WALKING TIME
 					
 					infoArrivalTime.textContent += " (" + availableTime.toString() + " mins)";
 					infoArrivalTime.className += " info-arrival-time-walking";
@@ -418,8 +420,10 @@ $("start-searchbox").addEventListener("keyup", function(e) {
 });
 
 $("search-button-delayed").addEventListener("click", function() {
+	if (scheduleDatetime == undefined || scheduleDatetime == null)
+		scheduleDatetime = new Date();
 	$("schedule-modal").style.display = "block";
-	liveTime = fillLiveTime($("schedule-datetime"));
+	fillTime($("schedule-datetime"), scheduleDatetime);
 });
 
 /*
@@ -504,25 +508,37 @@ function generateMinical(parentElement, datetime) {
 }
 
 $("schedule-datetime").addEventListener("click", function() {
-	if (scheduleDatetime == null)
-		scheduleDatetime = new Date();
-	generateMinical($("mini-cal"), scheduleDatetime);
-	$("datetime-modal").style.display = "block";
+	if (lastChosenSchedule == "depart at") {
+		if (scheduleDatetime == null)
+			scheduleDatetime = new Date();
+		// Update datetime picker here as it will be guarenteed to be correct
+		$("time-hour").value = scheduleDatetime.getUTCHours();
+		let minutes = scheduleDatetime.getUTCMinutes();
+		$("time-minute").value = Math.ceil(minutes/5)*5;
+		$("datetime-modal").style.display = "block";
+	}
 });
 
 $("popup-cancel").addEventListener("click", function() {
 	// DISABLE TIME UPDATE & HIDE MODAL
 	$("schedule-modal").style.display = "none";
-	clearInterval(liveTime);
 });
 
 $("popup-confirm").addEventListener("click", function() {
 	// DISABLE TIME UPDATE & HIDE MODAL
 	$("schedule-modal").style.display = "none";
-	clearInterval(liveTime);
 	
-	// Update timetable datetime
+	if (lastChosenSchedule == "leave now") {
+		scheduleDatetime = new Date();
+	} else {
+		// Update timetable datetime
+		scheduleDatetime = new Date($("schedule-datetime").getAttribute("datetime"));
+	}
 	
+	// Update datetime picker here as it will be guarenteed to be correct
+	$("time-hour").value = scheduleDatetime.getUTCHours();
+	let minutes = scheduleDatetime.getUTCMinutes();
+	$("time-minute").value = Math.ceil(minutes/5)*5;
 });
 
 let radioButtons = $(".popup-radio-button", true)
@@ -538,9 +554,13 @@ for (let i=0; i<radioButtons.length; i++) {
 		for (let i=0; i<allRadios.length; i++)
 			allRadios[i].className = "popup-radio-button";
 		this.getElementsByClassName("popup-radio-button")[0].className = "popup-radio-button popup-radio-button-active";
+		lastChosenSchedule = this.getAttribute("data-option");
 		
-		/* Schedule Setting */
-		schedule = this.dataset.option;
+		if (this.textContent.trim() == "Leave Now") {
+			$("schedule-datetime").style.color = "rgba(0, 0, 0, 0.5)";
+		} else {
+			$("schedule-datetime").style.color = "rgba(0, 0, 0, 1)";
+		}
 	});
 }
 
@@ -697,8 +717,11 @@ function addDirectionsResult(value) {
 }
 
 $("directions-options-button").addEventListener("click", function() {
+	if (scheduleDatetime == undefined || scheduleDatetime == null)
+		scheduleDatetime = new Date();
 	$("schedule-modal").style.display = "block";
-	liveTime = fillLiveTime($("schedule-datetime"));
+	fillTime($("schedule-datetime"), scheduleDatetime);
+	// $("schedule-datetime").setAttribute("datetime", new Date());
 });
 
 $("guide-screen-button-nav").addEventListener("click", function() {
@@ -997,3 +1020,29 @@ function addRecentRoute(route) {
 		return false;
 	}
 }
+
+/*
+================================================================================
+DATETIME MODAL HANDLERS
+================================================================================
+*/
+
+$("datetime-popup-cancel").addEventListener("click", function() {
+	// Go back
+	$("datetime-modal").style.display = "none";
+});
+
+$("datetime-popup-confirm").addEventListener("click", function() {
+	// Set time of previous modal and change its text content
+	let hour = $("time-hour").value;
+	let minute = $("time-minute").value;
+	let d = new Date();
+	d.setUTCHours(parseInt(hour));
+	d.setUTCMinutes(parseInt(minute));
+	
+	$("schedule-datetime").setAttribute("datetime", d);
+	$("schedule-datetime").textContent = hour + ":" + minute.padStart(2, "0");
+	
+	// Go back
+	$("datetime-modal").style.display = "none";
+});
