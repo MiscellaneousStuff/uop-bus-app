@@ -179,6 +179,7 @@ function setArrivalPane(stopIndex) {
 						map.showWalking(stopIndex);
 					});
 				} else {
+					/*
 					infoArrivalTime.addEventListener("click", function(e) {
 						// Change this to travel button
 						let oldTravelButton = $(".info-arrival-time info-arrival-time-walking");
@@ -192,6 +193,7 @@ function setArrivalPane(stopIndex) {
 						// string changing
 						oldTravelButton.textContent = oldTravelButton.textContent.split(" ")[0];
 					});
+					*/
 				}
 				$("info-arrival-times").appendChild(infoArrivalTime);
 			}
@@ -223,6 +225,7 @@ function addSearchResult(query, result, stopIndex) {
 	searchResult.result = result;
 	searchResult.stopIndex = stopIndex;
 	searchResult.addEventListener("click", function() {
+		$(".info-arrival-subheader").textContent = "Arrival Times";
 		$("stops-button").style.display = "block";
 		infoState = "station";
 		infoMinimized = false;
@@ -349,7 +352,7 @@ function addInfoSavedRoute(route) {
 	return infoSectionTrip;
 }
 
-$("info-resize").addEventListener("click", function() {
+function closeInfo() {
 	if (infoState == "saved") {
 		if (infoMinimized) {
 			infoMinimized = false;
@@ -385,6 +388,10 @@ $("info-resize").addEventListener("click", function() {
 			$("info-label").textContent = $("info-arrival-header").textContent;
 		}
 	}
+}
+
+$("info-resize").addEventListener("click", function() {
+	closeInfo();
 });
 
 $("start-searchbox").addEventListener("click", function() {
@@ -761,6 +768,32 @@ function setDirections(startIndex, endIndex) {
 			loopEnd = endIndex + stopPlaceCount;
 		for (let i=loopStart; i<loopEnd; i++) {
 			waypoints.push({"location": timetable.getStopPlace(i % stopPlaceCount)});
+		}
+	}
+	
+	// Update info pane
+	$("stops-button").style.display = "block";
+	infoState = "station";
+	infoMinimized = false;
+	map.clearMarkers();
+	$("info-arrival").style.display = "flex";
+	$("info-minimized").style.display = "none";
+	$("info-resize").style.display = "flex";
+	$("info").className += " info-rounded";
+	setArrivalPane(startIndex);
+	$(".info-arrival-subheader").textContent = "to " + timetable.getStop(endIndex);
+	map.clearRoutes();
+	
+	// Show Destination Time
+	if ($(".info-arrival-time", true).length < 3) {
+		$(".info-arrival-header").textContent = "";
+		$(".info-arrival-subheader").textContent = "No service at this time for this route";
+		$(".info-arrival-times").innerHTML = "";
+	} else {
+		$(".info-arrival-time", true)[1].textContent = "to";
+		let destArrival = timetables.getActiveTimetable().getNextArrivals(endIndex, 1, scheduleDatetime);
+		if (destArrival != null) {
+			$(".info-arrival-time", true)[2].textContent = destArrival;
 		}
 	}
 	

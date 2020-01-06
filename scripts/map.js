@@ -349,6 +349,7 @@ class StopsControl {
 			showRoute();
 			showStops();
 			map.map.setZoom(13);
+			closeInfo();
 		});
 	}
 }
@@ -370,6 +371,7 @@ function markerHandler() {
 	if (this.id != -1) {
 		infoState = "station";
 		infoMinimized = false;
+		$(".info-arrival-subheader").textContent = "Arrival Times";
 		setArrivalPane(this.id);
 	}
 }
