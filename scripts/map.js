@@ -15,6 +15,7 @@ class MapComponent {
 		// DirectionsRenderer Containers
 		this.busDirections = null;
 		this.walkingDirections = null;
+		this.mainRoute = null;
 	}
 	showWalking(stopIndex) {
 		if (this.position != null) {
@@ -101,6 +102,38 @@ class MapComponent {
 		this.directionsService = new google.maps.DirectionsService;
 		this.distanceMatrixService = new google.maps.DistanceMatrixService();
 		this.initControls();
+	}
+	// -----------------------------------------------------------------------------
+	// NOTE: WIDTH & HEIGHT ARE JUST VALUES AS STRING WITHOUT PX (e.g. 1000px = "1000")
+	// Gets a static image
+	// IN = Route Object | OUT = True if added, False if exists
+	getStaticMap(origin, destination, width, height) {
+		// let request = this.directionsService.directions.request;
+		let start = origin.lat + ',' + origin.lng;
+		let end = destination.lat + ',' + destination.lng;
+		/*
+		let path = map.directionsDisplay.directions.routes[0].overview_polyline;
+		let markers = [];           
+		let waypoints_labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+		let waypoints_label_iter = 0;   
+		markers.push("markers=color:green|label:" + waypoints_labels[waypoints_label_iter] + '|' + start);
+
+		for(let i=0;i<request.waypoints.length;i++){
+			//I have waypoints that are not stopovers I dont want to display them
+			if(request.waypoints[i].stopover==true){
+			markers.push("markers=color:blue|label:" + waypoints_labels[++waypoints_label_iter] + '|' + request.waypoints[i].location.lat() + "," +request.waypoints[i].location.lng());
+			}           
+		}
+
+		markers.push("markers=color:red|label:" + waypoints_labels[++waypoints_label_iter] + '|' + end);
+
+		markers = markers.join('&');
+		*/
+		
+		let path = "";
+		let markers = "";
+		
+		return "https://maps.googleapis.com/maps/api/staticmap?size=" + width + "x" + height + "&maptype=roadmap&path=enc:" + path + "&" + markers + "&key=" + KEY;
 	}
 	displayRoute(origin, destination, travelMode, waypoints=[], color) {
 		let directionsRenderer = new google.maps.DirectionsRenderer({
@@ -261,6 +294,11 @@ class MapComponent {
 			this.walkingDirections.setMap(null);
 		this.walkingDirections = null;
 	}
+	clearMainRoute() {
+		if (this.mainRoute != null)
+			this.mainRoute.setMap(null);
+		this.mainRoute = null;
+	}
 	textSearch(query, func) {
 		let request = {
 			location: this.map.getCenter(),
@@ -308,6 +346,7 @@ class StopsControl {
 			showStops();
 			$("stops-button").style.display = "none";
 		});
+		map.clearRoutes();
 	}
 }
 

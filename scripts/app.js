@@ -2,7 +2,8 @@ let app;
 
 const MAX_SEARCH_RESULTS = 6;
 const MAX_ARRIVAL_RESULTS = 3;
-const MAX_RECENT_ROUTES = 6;
+const MAX_RECENT_ROUTES = 8;
+const KEY = "AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g";
 
 let results = null;
 let scheduleDatetime = null;
@@ -278,6 +279,7 @@ $("sidebar-modal").addEventListener("click", function(e) {
 
 $("info-minimized").addEventListener("click", function() {
 	if (infoState == "saved") {
+		// Display Saved Routes
 		let infoSections = $(".info-section", true);
 		for (let i=0; i<infoSections.length; i++)
 			infoSections[i].style.display = "flex";
@@ -288,12 +290,62 @@ $("info-minimized").addEventListener("click", function() {
 		$("info-resize").style.display = "flex";
 		$("info").className += " info-rounded";
 		// $("info-arrival").style.display = "flex";
+		
+		// Update header if there are saved routes
+		if (getRecentRoutes.length > 0) {
+			$(".info-section-header").textContent = "Saved Routes";
+		}
+		
+		// Clear old saved routes
+		// $(".info-section-trips").innerHTML = "";
+		
+		// Add new ones
+		let recentRoutes = getRecentRoutes();
+		if (recentRoutes != null) {
+			for (let i=0; i<recentRoutes.length; i++) {
+				let recentRoute = recentRoutes[i];
+			
+			}
+		}
 	} else {
 		$("info-arrival").style.display = "flex";
 		$("info-resize").style.display = "flex";
 		this.style.display = "none";
 	}
 });
+
+/*
+<div class="info-section-trip">
+	<div class="info-section-trip-image
+	info-section-trip-image-uni"></div>
+	<div class="info-section-trip-name">Uni</div>
+</div>
+*/
+
+function addInfoSavedRoute(type) {
+	// Get component label and class type
+	let label = type[0].toUpperCase() + type.slice(1, type.length);
+	let classType = type;
+	
+	// Create new elements
+	let infoSectionTrip = document.createElement("div");
+	let infoSectionTripImage = document.createElement("div");
+	let infoSectionTripName = document.createElement("div");
+	
+	// Apply class names
+	infoSectionTrip.className = "info-section-trip";
+	infoSectionTripImage.className = "info-section-trip-image";
+	infoSectionTripImage.className += " info-section-trip-image-" + classType;
+	infoSectionTripName.className = "info-section-trip-name";
+	
+	// Set contents of elements
+	infoSectionTripName.textContent = label;
+	
+	// Append elements to each other
+	$(".info-section-trips").appendChild(infoSectionTrip);
+	infoSectionTrip.appendChild(infoSectionTripImage);
+	infoSectionTrip.appendChild(infoSectionTripName);
+}
 
 $("info-resize").addEventListener("click", function() {
 	if (infoState == "saved") {
@@ -571,13 +623,22 @@ function addDirectionsResult(value) {
 			
 			// Hide previous routes
 			map.clearRoutes();
+			map.clearMainRoute();
 			
 			// Show our new route
-			map.busDirections = map.displayRoute(start, end, "DRIVING", waypoints, "#000000");
+			map.busDirections = map.displayRoute(start, end, "DRIVING", waypoints, "#800080");
 			
 			// Save Route as Recent Route
-			localStorage.setItem("recentRoute", JSON.stringify({title: timetableTitle, start: startIndex, end: endIndex}));
-			console.log(localStorage.getItem("recentRoute"));
+			let route = {
+				title: timetableTitle,
+				start: startIndex,
+				end: endIndex,
+				type: "edit" // Default, removable,
+			}
+			if (localStorage.hasOwnProperty("recent-routes"))
+				console.log("recent-routes before:", JSON.parse(localStorage.getItem("recent-routes")));
+			addRecentRoute(route);
+			// console.log("recent-routes after:", JSON.parse(localStorage.getItem("recent-routes")));
 			
 			// Hide Directions Screen
 			app.hide("directions");
@@ -673,30 +734,111 @@ RECENT ROUTES HANDLERS
 */
 
 $("sidebar-help-routes").addEventListener("click", function() {
-	app.show("routes");
-	setRecentRouteIcons();
 	loadRecentRoutes();
+	app.show("routes");
 });
 
 $("routes-back").addEventListener("click", function() {
 	app.hide("routes");
 });
 
-function setRecentRouteIcons() {
-	let icons = $(".routes-section-desc-icon", true);
-	console.log(icons);
-	for (let i=0; i<icons.length; i++) {
-		let icon = icons[i];
-		icon.addEventListener("click", function() {
-			console.log("show route type");
-			app.show("routeType");
-		});
-	}
-}
+/*
+<div class="routes-section">
+	<div class="routes-section-map" style="background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=50.79105,-1.077&zoom=13&size=288x120&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g')">
+	</div>
+	<div class="routes-section-desc">
+		<div class="routes-section-desc-icon">
+			<div class="info-section-trip">
+				<div class="info-section-trip-image info-section-trip-image-edit"></div>
+			</div>
+		</div>
+		<div class="routes-section-desc-stops">
+			<div class="routes-section-desc-start">
+				University of Portsmouth
+			</div>
+			<div class="routes-section-desc-end">
+				to Festing Hotel
+			</div>
+		</div>
+	</div>
+</div>
+*/
 
 function loadRecentRoutes() {
 	if (localStorage.hasOwnProperty("recent-routes")) {
+		// Get recent routes if user has recent routes
 		let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+		
+		// Clear routes sections
+		$(".routes-sections").innerHTML = "";
+		
+		console.log(recentRoutes[0].start);
+		
+		// Loop through recent routes if they exist
+		for (let i=0; i<recentRoutes.length; i++) {
+			// Get Recent Route from LocalStorage
+			let recentRoute = recentRoutes[i];
+			
+			// Get Recent Route Details
+			let start = recentRoute.start;
+			let end = recentRoute.end;
+			let startStop = timetables.getActiveTimetable().getStop(start);
+			let endStop = timetables.getActiveTimetable().getStop(end);
+			let type = recentRoute.type;
+			
+			// Create elements for recent route entry
+			let routesSection = document.createElement("div");
+			let routesSectionMap = document.createElement("div");
+			let routesSectionDesc = document.createElement("div");
+			let routesSectionDescIcon = document.createElement("div");
+			let infoSectionTrip = document.createElement("div");
+			let infoSectionTripInner = document.createElement("div");
+			let routesSectionDescStops = document.createElement("div");
+			let routesSectionDescStart = document.createElement("div");
+			let routesSectionDescEnd = document.createElement("div");
+			
+			// Apply classes to new elements
+			routesSection.className = "routes-section";
+			routesSectionMap.className = "routes-section-map";
+			routesSectionDesc.className = "routes-section-desc";
+			routesSectionDescIcon.className = "routes-section-desc-icon";
+			infoSectionTrip.className = "info-section-trip";
+			infoSectionTripInner.className = "info-section-trip-image";
+			infoSectionTripInner.className += " info-section-trip-image-" + type;
+			routesSectionDescStops.className = "routes-section-desc-stops";
+			routesSectionDescStart.className = "routes-section-desc-start";
+			routesSectionDescEnd.className = "routes-section-desc-end";
+			
+			// Set content of relevant elements
+			routesSectionMap.style.className = "";
+			routesSectionDescStart.textContent = startStop;
+			routesSectionDescEnd.textContent = "to " + endStop;
+			console.log(startStop, endStop);
+			
+			// Set routes section and icon click handlers here
+			routesSection.addEventListener("click", function(e) {
+				if (e.target === this) {
+					app.hide("routes");
+					// Set the directions route here, make generic function which is
+					// shared with the directions modal to set the route on the map
+					app.show("main");
+				}
+			});
+			routesSectionDescIcon.addEventListener("click", function() {
+				app.show("routeType");
+			});
+			
+			// Append elements to each other
+			routesSection.appendChild(routesSectionMap);
+			routesSection.appendChild(routesSectionDesc);
+			routesSectionDesc.appendChild(routesSectionDescIcon);
+			routesSectionDesc.appendChild(routesSectionDescStops);
+			routesSectionDescStops.appendChild(routesSectionDescStart);
+			routesSectionDescStops.appendChild(routesSectionDescEnd);
+			routesSectionDescIcon.appendChild(infoSectionTrip);
+			infoSectionTrip.appendChild(infoSectionTripInner);
+			$(".routes-sections").appendChild(routesSection);
+		}
 	}
 }
 
@@ -711,5 +853,51 @@ for (let i=0; i<routeTypeOptions.length; i++) {
 	let option = routeTypeOptions[i];
 	option.addEventListener("click", function() {
 		app.hide("routeType");
+		app.show("routes");
 	});
+}
+
+/*
+================================================================================
+RECENT ROUTE STORAGE
+================================================================================
+*/
+
+// NOTE: Saving a route as none is the same as deleting it as all routes saved
+// as edit are removed when new recent routes are added, only saved routes don't
+// get overwritten. There's a maximum of 4 saved routes and 4 recent routes for
+// a total of 8 routes in the recent route screen in total.
+
+// -----------------------------------------------------------------------------
+// Returns a list of route objects
+function getRecentRoutes() {
+	let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+	return recentRoutes;
+}
+
+// -----------------------------------------------------------------------------
+// Adds a route object to local storage
+// IN = Route Object | OUT = True if added, False if exists
+function addRecentRoute(route) {
+	// Add recent route array if it doesn't exist
+	if (!localStorage.hasOwnProperty("recent-routes"))
+		localStorage.setItem("recent-routes", JSON.stringify([]));
+	
+	// Get recent / saved routes
+	let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+	console.log(recentRoutes);
+	
+	// Check if route exists
+	for (let i=0; i<recentRoutes.length; i++) {
+		let recentRoute = recentRoutes[i];
+		let start = recentRoute.start;
+		let end = recentRoute.end;
+		if (route.start == start && route.end == end)
+			return false;
+	}
+	
+	// Add route if it doesn't exist
+	recentRoutes.push(route);
+	localStorage.setItem("recent-routes", JSON.stringify(recentRoutes));
+	return true;
 }
