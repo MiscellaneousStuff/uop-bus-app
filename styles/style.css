@@ -1274,3 +1274,98 @@ ROUTE TYPE MODAL
 .route-type-popup-option-last {
 	margin-bottom: 0;
 }
+
+/*
+================================================================================
+DATETIME MODAL
+================================================================================
+*/
+
+.datetime-modal {
+	z-index: 99999;
+}
+
+/*
+================================================================================
+MINICAL
+================================================================================
+*/
+
+.mini-cal-header-cw {
+	width: 2rem;
+}
+
+.mini-cal-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.mini-cal-row-cell-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;
+	flex-basis: 0;
+}
+
+.mini-cal {
+	flex-direction: column;
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+}
+
+.mini-cal-header {
+	display: flex;
+	flex-direction: row;
+	font-size: 0.7rem;
+	text-align: center;
+	color: rgba(0, 0, 0, 0.5);
+	font-weight: 500;
+}
+
+.mini-cal-header-day {
+	flex-grow: 1;
+	flex-basis: 0;
+}
+
+.mini-cal-row-cw {
+	display: flex;
+	font-size: 0.8rem;
+	flex-grow: 0;
+	flex-basis: 2rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.mini-cal-row-cw div {
+	color: rgba(0, 0, 0, 1);
+	font-size: 0.8rem;
+	width: 2rem;
+	background: #F1F3F4;
+	border-radius: 5px;
+	text-align: center;
+	padding-top: 0.1rem;
+	padding-bottom: 0.1rem;
+}
+
+.mini-cal-row-cell {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.9rem;
+	color: #000;
+	text-align: center;
+	height: 1.75rem;
+	width: 1.75rem;
+}
+
+.mini-cal-row-cell-other {
+	color: rgba(0, 0, 0, 0.5);
+}
+
+.mini-cal-row-cell-today {
+	background: #1A73E8;
+	border-radius: 100%;
+	color: #FFF;
+}

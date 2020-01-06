@@ -82,6 +82,7 @@ class MapComponent {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
 				};
+				$("stops-button").style.display = "block";
 				showStops();
 				map.getClosestStop();
 			});
@@ -121,8 +122,7 @@ class MapComponent {
 		
 		/*
 		let path = map.directionsDisplay.directions.routes[0].overview_polyline;
-		let markers = [];           
-		let waypoints_labels = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
+		let markers = [];
 		let waypoints_label_iter = 0;   
 		markers.push("markers=color:green|label:" + waypoints_labels[waypoints_label_iter] + '|' + start);
 
@@ -280,7 +280,7 @@ class MapComponent {
 				}
 			}
 			if (zoom)
-				this.map.setZoom(14);
+				this.map.setZoom(13);
 		}
 	}
 	clearMarkers() {
@@ -345,7 +345,10 @@ class StopsControl {
 			showStops();
 			$("stops-button").style.display = "none";
 			map.clearRoutes();
+			map.clearMarkers();
 			showRoute();
+			showStops();
+			map.map.setZoom(13);
 		});
 	}
 }

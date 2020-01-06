@@ -20,7 +20,7 @@
 						Quickly find bus times
 					</div>
 					<div class="guide-screen-fragment-description">
-						Tap a stop icon or search for a stop to get scheduled arrival times by picking the time and date of travel
+						Tap a stop icon or search for a stop to get scheduled arrival times by picking the time of travel
 					</div>
 				</div>
 				<div class="guide-screen-fragment">
@@ -44,15 +44,15 @@
 				<div class="guide-screen-fragment">
 					<div class="guide-screen-fragment-screenshot guide-screen-fragment-screenshot-schedule"></div>
 					<div class="guide-screen-fragment-title">
-						Change time and date of travel
+						Change time of travel
 					</div>
 					<div class="guide-screen-fragment-description">
-						Change the time and date of arrivals or a route
+						Set time of travel to now, arrival time or departure time
 					</div>
 				</div>
 			</div>
 			<div class="guide-screen-bottom">
-				<div class="guide-screen-button">&nbsp</div>
+				<div class="guide-screen-button"> &nbsp </div>
 				<div class="guide-screen-dots">
 					<div class="guide-screen-dot guide-screen-dot-active"></div>
 					<div class="guide-screen-dot"></div>
@@ -65,38 +65,26 @@
 		<div id="route-type-modal" class="modal route-type-modal">
 			<div class="popup-container">
 				<div id="route-type-popup" class="popup route-type-popup">
-					<div class="popup-header">
-						Set route type
-					</div>
+					<div class="popup-header">Save route as</div>
 					<div class="popup-option route-type-popup-option" data-option="home">
 						<div class="info-section-trip-image info-section-trip-image-home"></div>
-						<div class="route-type-popup-option-label">
-							Home
-						</div>
+						<div class="route-type-popup-option-label">Home</div>
 					</div>
 					<div class="popup-option route-type-popup-option" data-option="work">
 						<div class="info-section-trip-image info-section-trip-image-work"></div>
-						<div class="route-type-popup-option-label">
-							Work
-						</div>
+						<div class="route-type-popup-option-label">Work</div>
 					</div>
 					<div class="popup-option route-type-popup-option" data-option="gym">
 						<div class="info-section-trip-image info-section-trip-image-gym"></div>
-						<div class="route-type-popup-option-label">
-							Gym
-						</div>
+						<div class="route-type-popup-option-label">Gym</div>
 					</div>
 					<div class="popup-option route-type-popup-option" data-option="uni">
 						<div class="info-section-trip-image info-section-trip-image-uni"></div>
-						<div class="route-type-popup-option-label">
-							Uni
-						</div>
+						<div class="route-type-popup-option-label">Uni</div>
 					</div>
 					<div class="popup-option route-type-popup-option" data-option="edit">
 						<div class="info-section-trip-image"></div>
-						<div class="route-type-popup-option-label route-type-popup-option-last">
-							None
-						</div>
+						<div class="route-type-popup-option-label route-type-popup-option-last">None</div>
 					</div>
 				</div>
 			</div>
@@ -132,6 +120,19 @@
 				</div>
 			</div>
 		</div>
+		<div id="datetime-modal" class="modal datetime-modal">
+			<div class="popup-container">
+				<div id="datetime-popup" class="popup">
+					<div id="mini-cal" class="mini-cal">
+						
+					</div>
+					<div class="popup-buttons">
+						<div class="popup-button" id="popup-cancel">Cancel</div>
+						<div class="popup-button popup-button-confirm" id="popup-confirm">OK</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="sidebar-modal" class="modal">
 			<div id="sidebar" class="sidebar">
 				<div class="sidebar-option sidebar-logo">
@@ -150,13 +151,7 @@
 				</div>
 				<div id="routes-clear" class="screen-header-button-clear"></div>
 			</div>
-			<div class="routes-sections">
-				<!--
-				<div class="routes-section">
-					<div class="routes-section-map" style="background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=50.79105,-1.077&zoom=13&size=288x120&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyB24tTVrdzE2nS_x-PZe8gEOaksIZ24w_g')">
-					</div>
-				-->
-			</div>
+			<div class="routes-sections"></div>
 		</div>
 		<div class="screen" id="help-screen">
 			<div class="screen-header" id="language-header">
@@ -241,11 +236,6 @@
 						<div id="search-start" class="search-textbox">
 							<input autocorrect="off" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" id="start-searchbox" placeholder="Find an arrival time"/>
 						</div>
-						<!--
-						<div class="search-searchboxes">
-							
-						</div>
-						-->
 						<div id="search-button-delayed" class="search-button search-button-delayed"></div>
 					</div>
 					<div id="search-results" class="search-results"></div>

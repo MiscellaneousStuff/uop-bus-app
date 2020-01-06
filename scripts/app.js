@@ -422,6 +422,94 @@ $("search-button-delayed").addEventListener("click", function() {
 	liveTime = fillLiveTime($("schedule-datetime"));
 });
 
+/*
+================================================================================
+SCHEDULE MODAL
+================================================================================
+*/
+
+function generateMinical(parentElement, datetime) {
+	// Create New Elements
+	let minical_header = document.createElement("div");
+	
+	// Set Classes
+	minical_header.className = "mini-cal-header";
+	
+	// Set Header Content
+	let minical_header_cw = document.createElement("div");
+	minical_header_cw.className = "mini-cal-header-cw";
+	// minical_header.appendChild(minical_header_cw);
+	for (let i=0; i<7; i++) {
+		let minical_header_day = document.createElement("div");
+		minical_header_day.textContent = DAYS[(i + 1) % 7].slice(0, 3).toUpperCase();
+		minical_header_day.className = "mini-cal-header-day";
+		minical_header.appendChild(minical_header_day);
+	}
+	
+	// Append Elements
+	console.log(parentElement);
+	parentElement.appendChild(minical_header);
+	
+	// Set Minical Rows
+	let week_count = weekCount(datetime.getFullYear(), datetime.getMonth());
+	let first_day = new Date(datetime.getFullYear(), datetime.getMonth(), 1);
+	let first_week_day = getMonday(first_day);
+	for (let i=0; i<week_count; i++) {
+		let minical_row = document.createElement("div");
+		let minical_row_cw = document.createElement("div");
+		let minical_row_cw_inner = document.createElement("div");
+		minical_row.className = "mini-cal-row";
+		if (first_week_day.getWeek() == datetime.getWeek())
+			minical_row.className += " mini-cal-row-active";
+		minical_row_cw.className = "mini-cal-row-cw";
+		minical_row_cw_inner.textContent = first_week_day.getWeek();
+		minical_row_cw.appendChild(minical_row_cw_inner);
+		// minical_row.appendChild(minical_row_cw);
+		for (let i=0; i<7; i++) {
+			// Create Cell
+			let minical_row_cell_container = document.createElement("div");
+			let minical_row_cell = document.createElement("div");
+			minical_row_cell_container.className = "mini-cal-row-cell-container";
+			
+			// Set minical cell ID
+			minical_row_cell_container.date = new Date(first_week_day);
+			
+			// Set cell styles
+			if (first_week_day.getMonth() == datetime.getMonth()) {
+				minical_row_cell.className = "mini-cal-row-cell";
+			} else {
+				minical_row_cell.className = "mini-cal-row-cell mini-cal-row-cell-other";
+			}
+			
+			// Add cell behaviour
+			if (sameDay(first_week_day, new Date()))
+				minical_row_cell.className += " mini-cal-row-cell-today";
+			/* if (first_week_day.getMonth() == datetime.getMonth()) */
+			minical_row_cell_container.addEventListener("click", function() {
+				/*
+				calUI.setDate(datetime);
+				calUI.displayEvents();
+				hideMinical();
+				*/
+			});
+			
+			// Append Minical Row
+			minical_row_cell.textContent = first_week_day.getDate();
+			minical_row_cell_container.appendChild(minical_row_cell);
+			minical_row.appendChild(minical_row_cell_container);
+			first_week_day.setDate(first_week_day.getDate() + 1);
+		}
+		parentElement.appendChild(minical_row);
+	}
+}
+
+$("schedule-datetime").addEventListener("click", function() {
+	if (scheduleDatetime == null)
+		scheduleDatetime = new Date();
+	generateMinical($("mini-cal"), scheduleDatetime);
+	$("datetime-modal").style.display = "block";
+});
+
 $("popup-cancel").addEventListener("click", function() {
 	// DISABLE TIME UPDATE & HIDE MODAL
 	$("schedule-modal").style.display = "none";
@@ -432,6 +520,9 @@ $("popup-confirm").addEventListener("click", function() {
 	// DISABLE TIME UPDATE & HIDE MODAL
 	$("schedule-modal").style.display = "none";
 	clearInterval(liveTime);
+	
+	// Update timetable datetime
+	
 });
 
 let radioButtons = $(".popup-radio-button", true)
@@ -449,24 +540,9 @@ for (let i=0; i<radioButtons.length; i++) {
 		this.getElementsByClassName("popup-radio-button")[0].className = "popup-radio-button popup-radio-button-active";
 		
 		/* Schedule Setting */
-		setSchedule(this.dataset.option);
+		schedule = this.dataset.option;
 	});
 }
-
-function setSchedule(schedule) {
-	if (schedule == "leave now") {
-		scheduleDatetime = new Date();
-	} else if (schedule == "depart at") {
-		let chosenHour 		= parseInt($("schedule-datetime").textContent.split(":")[0]);
-		let chosenMinute 	= parseInt($("schedule-datetime").textContent.split(":")[1]);
-		scheduleDatetime 	= new Date();
-		scheduleDatetime.setHours(chosenHour);
-		scheduleDatetime.setMinutes(chosenMinute);
-	} else if (schedule == "arrive by") {
-		// DEBUG: Requires route
-	}
-}
-
 
 $("directions-back").addEventListener("click", function() {
 	$("directions-modal").style.display = "none";
