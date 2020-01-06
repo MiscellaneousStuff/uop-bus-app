@@ -1,6 +1,10 @@
 let route;
 
 const MAX_ZOOM = 12;
+let CENTER = {
+	lat: 50.79105,
+	lng: -1.0772249999999985
+};
 
 class MapComponent {
 	constructor(center) {
@@ -106,9 +110,15 @@ class MapComponent {
 	// Gets a static image
 	// IN = Route Object | OUT = True if added, False if exists
 	getStaticMap(origin, destination, width, height) {
+		let org = JSON.parse(localStorage.getItem(origin));
+		let dest = JSON.parse(localStorage.getItem(destination));
+		
 		// let request = this.directionsService.directions.request;
-		let start = origin.lat + ',' + origin.lng;
-		let end = destination.lat + ',' + destination.lng;
+		let start = org.lat + ',' + org.lng;
+		let end = dest.lat + ',' + dest.lng;
+		
+		let center = CENTER.lat + "," + CENTER.lng;
+		
 		/*
 		let path = map.directionsDisplay.directions.routes[0].overview_polyline;
 		let markers = [];           
@@ -131,7 +141,8 @@ class MapComponent {
 		let path = "";
 		let markers = "";
 		
-		return "https://maps.googleapis.com/maps/api/staticmap?size=" + width + "x" + height + "&maptype=roadmap&path=enc:" + path + "&" + markers + "&key=" + KEY;
+		let value = "https://maps.googleapis.com/maps/api/staticmap?center=" + center + "&zoom=12&size=" + width + "x" + height + "&maptype=roadmap&path=enc:" + path + "&" + markers + "&key=" + KEY;
+		return value;
 	}
 	displayRoute(origin, destination, travelMode, waypoints=[], color) {
 		let directionsRenderer = new google.maps.DirectionsRenderer({
@@ -168,6 +179,8 @@ class MapComponent {
 	}
 	updateRouteCenter() {
 		this.map.setCenter(this.routeCenter);
+		if (this.routeCenter != undefined || this.routeCenter != null)
+			console.log(this.routeCenter.lat(), this.routeCenter.lng());
 	}
 	initControls() {
 		let directionsControlDiv = document.createElement("div");

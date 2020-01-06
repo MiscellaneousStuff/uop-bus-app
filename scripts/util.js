@@ -30,3 +30,7 @@ function fillLiveTime(elem) {
 	}, 1000);
 	return interval;
 }
+
+function REM(rem) {
+	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}

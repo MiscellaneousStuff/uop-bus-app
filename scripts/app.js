@@ -767,10 +767,11 @@ function loadRecentRoutes() {
 			let recentRoute = recentRoutes[i];
 			
 			// Get Recent Route Details
+			let timetable = timetables.getActiveTimetable()
 			let start = recentRoute.start;
 			let end = recentRoute.end;
-			let startStop = timetables.getActiveTimetable().getStop(start);
-			let endStop = timetables.getActiveTimetable().getStop(end);
+			let startStop = timetable.getStop(start);
+			let endStop = timetable.getStop(end);
 			let type = recentRoute.type;
 			
 			// Create elements for recent route entry
@@ -797,7 +798,6 @@ function loadRecentRoutes() {
 			routesSectionDescEnd.className = "routes-section-desc-end";
 			
 			// Set content of relevant elements
-			routesSectionMap.style.className = "";
 			routesSectionDescStart.textContent = startStop;
 			routesSectionDescEnd.textContent = "to " + endStop;
 			routesSectionDescIcon.route = recentRoute;
@@ -815,15 +815,23 @@ function loadRecentRoutes() {
 			});
 			
 			// Append elements to each other
-			routesSection.appendChild(routesSectionMap);
-			routesSection.appendChild(routesSectionDesc);
-			routesSectionDesc.appendChild(routesSectionDescIcon);
-			routesSectionDesc.appendChild(routesSectionDescStops);
+			infoSectionTrip.appendChild(infoSectionTripInner);
+			routesSectionDescIcon.appendChild(infoSectionTrip);
 			routesSectionDescStops.appendChild(routesSectionDescStart);
 			routesSectionDescStops.appendChild(routesSectionDescEnd);
-			routesSectionDescIcon.appendChild(infoSectionTrip);
-			infoSectionTrip.appendChild(infoSectionTripInner);
+			routesSectionDesc.appendChild(routesSectionDescIcon);
+			routesSectionDesc.appendChild(routesSectionDescStops);
+			routesSection.appendChild(routesSectionMap);
+			routesSection.appendChild(routesSectionDesc);
 			$(".routes-sections").appendChild(routesSection);
+			
+			// Set minimap content
+			let minimapStart = timetable.getStopPlace(start);
+			let minimapEnd = timetable.getStopPlace(end);
+			let width = window.innerWidth - REM(2);
+			let height = 120;
+			let staticMap = map.getStaticMap(minimapStart, minimapEnd, width, height);
+			routesSectionMap.style.backgroundImage = "url('" + staticMap + "')";
 		}
 	}
 }

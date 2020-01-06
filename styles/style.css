@@ -1149,11 +1149,15 @@ GUIDE SCREEN
 	margin-bottom: 1rem;
 	box-shadow: 0 10px 6px -6px rgb(0, 0, 0, 0.3);
 	background-repeat: no-repeat;
-	background-size: 187px 374px;
+	background-size: 187px 375px;
 }
 
 .guide-screen-fragment-screenshot-arrivals {
 	background-image: url("../images/screenshot_arrivals.png");
+}
+
+.guide-screen-fragment-screenshot-saved {
+	background-image: url("../images/screenshot_saved.png");
 }
 
 .guide-screen-fragment-screenshot-routes {
@@ -1165,15 +1169,10 @@ GUIDE SCREEN
 }
 
 .guide-screen-fragments {
-	/*
-	display: flex;
-	flex-grow: 1;
-	*/
 	--n: 1;
 	display: flex;
 	align-items: center;
 	overflow-y: hidden;
- 	/* width: 100%; // fallback */
 	width: calc(var(--n)*100%);
 	flex-grow: 1;
 	transform: translate(calc(var(--tx, 0px) + var(--i, 0)/var(--n)*-100%));
@@ -1207,6 +1206,7 @@ ROUTES SCREEN
 .routes-section-map {
 	background: rgba(0, 0, 0, 0.5);
 	height: 120px;
+	width: 100%;
 }
 
 .routes-section-desc {

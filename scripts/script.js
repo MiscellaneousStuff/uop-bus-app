@@ -2,10 +2,7 @@ let timetables;
 let map;
 
 function initMap() {
-	map = new MapComponent({
-		lat: 50.80,
-		lng: -1.08
-	});
+	map = new MapComponent(CENTER);
 	map.initMap();
 }
 
@@ -56,7 +53,6 @@ window.onload = function() {
 	
 	app.show("main");
 	
-	/* GUI SHIT */
 	timetables = new Timetables();
 	let stopPlaces = u1_places.split("\n").filter(Boolean);
 	timetables.addTimetable(
