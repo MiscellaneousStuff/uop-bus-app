@@ -36,7 +36,6 @@ function getTime(datetime) {
 	let date = datetime;
 	if (typeof(datetime) == "string")
 		date = new Date(datetime);
-	console.log(datetime, date);
 	let hours = date.getHours().toString().padStart(2, "0");
 	let minutes = date.getMinutes().toString().padStart(2, "0");
 	let printTime = hours + ":" + minutes;

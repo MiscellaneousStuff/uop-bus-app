@@ -126,6 +126,12 @@ class U1 extends Timetable {
 		}
 		return null;
 	}
+	getNextRouteTime(startIndex, endIndex, datetime) {
+		let startHour = datetime.getHours().toString().padStart(2, "0");
+		let startMinute = datetime.getMinutes().toString().padStart(2, "0");
+		let startTime = startHour + startMinute;
+		console.log(startTime);
+	}
 	setArrivals(data) {
 		// 12 stops so 12 arrivals
 		let arrivals = [];

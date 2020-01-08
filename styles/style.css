@@ -910,6 +910,15 @@ MAIN - INFO
 	height: 3rem;
 	border-radius: 100%;
 	margin-bottom: 0.5rem;
+	background-size: 1.5rem 1.5rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	/* background-color: #4285F4; */
+	background-color: #800080;
+}
+
+.info-section-trip-image-blank {
+	background-color: rgba(0, 0, 0, 0);
 }
 
 .info-section-trip-name {
@@ -918,43 +927,23 @@ MAIN - INFO
 }
 
 .info-section-trip-image-work {
-	background: url('../images/work.svg');
-	background-size: 1.5rem 1.5rem;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: #4285F4;
+	background-image: url('../images/work.svg');
 }
 
 .info-section-trip-image-home {
-	background: url('../images/home.svg');
-	background-size: 1.5rem 1.5rem;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: #4285F4;
+	background-image: url('../images/home.svg');
 }
 
 .info-section-trip-image-edit {
-	background: url('../images/edit.svg');
-	background-size: 1.5rem 1.5rem;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: #4285F4;
+	background-image: url('../images/edit.svg');
 }
 
 .info-section-trip-image-gym {
-	background: url('../images/gym.svg');
-	background-size: 1.5rem 1.5rem;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: #4285F4;
+	background-image: url('../images/gym.svg');
 }
 
 .info-section-trip-image-uni {
-	background: url('../images/uni.svg');
-	background-size: 1.5rem 1.5rem;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-color: #4285F4;
+	background-image: url('../images/uni.svg');
 }
 
 .info-arrival {
