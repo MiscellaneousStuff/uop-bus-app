@@ -458,7 +458,6 @@ function generateMinical(parentElement, datetime) {
 	}
 	
 	// Append Elements
-	console.log(parentElement);
 	parentElement.appendChild(minical_header);
 	
 	// Set Minical Rows
@@ -705,7 +704,6 @@ function addDirectionsResult(value) {
 				type: "edit" // Default, removable,
 			}
 			addRecentRoute(route);
-			// console.log("recent-routes after:", JSON.parse(localStorage.getItem("recent-routes")));
 			
 			// Hide Directions Screen
 			app.hide("directions");
@@ -871,7 +869,14 @@ RECENT ROUTES HANDLERS
 */
 
 $("routes-clear").addEventListener("click", function() {
-	localStorage.setItem("recent-routes", JSON.stringify([]));
+	let recentRoutes = JSON.parse(localStorage.getItem("recent-routes"));
+	let newRoutes = [];
+	for (let i=0; i<recentRoutes.length; i++) {
+		let recentRoute = recentRoutes[i];
+		if (recentRoute.type != "edit")
+			newRoutes.push(recentRoute);
+	}
+	localStorage.setItem("recent-routes", JSON.stringify(newRoutes));
 	loadRecentRoutes();
 });
 
@@ -982,7 +987,6 @@ for (let i=0; i<routeTypeOptions.length; i++) {
 		if (index != -1) {
 			let routes = getRecentRoutes();
 			routes[index].type = this.getAttribute("data-option");
-			console.log(this.getAttribute("data-option"));
 			localStorage.setItem("recent-routes", JSON.stringify(routes));
 		}
 		loadRecentRoutes();
@@ -1059,6 +1063,11 @@ function addRecentRoute(route) {
 DATETIME MODAL HANDLERS
 ================================================================================
 */
+
+for (let i=0; i<24; i++)
+	$("time-hour").innerHTML += "<option>" + i + "</option>";
+for (let i=0; i<12; i++)
+	$("time-minute").innerHTML += "<option>" + i*5 + "</option>";
 
 $("datetime-popup-cancel").addEventListener("click", function() {
 	// Go back

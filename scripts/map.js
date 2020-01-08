@@ -169,7 +169,7 @@ class MapComponent {
 				map.setRouteCenter(route.bounds.getCenter());
 				map.updateRouteCenter();
 			} else {
-				console.log("CANT DISPLAY ROUTE: ", origin, destination);
+				// console.log("CANT DISPLAY ROUTE: ", origin, destination);
 			}
 		});
 		return directionsRenderer;
@@ -179,8 +179,6 @@ class MapComponent {
 	}
 	updateRouteCenter() {
 		this.map.setCenter(this.routeCenter);
-		if (this.routeCenter != undefined || this.routeCenter != null)
-			console.log(this.routeCenter.lat(), this.routeCenter.lng());
 	}
 	initControls() {
 		let directionsControlDiv = document.createElement("div");
@@ -272,10 +270,10 @@ class MapComponent {
 								google.maps.event.addListener(marker, 'click', handler);
 								map.markers.push(marker);
 							} else {
-								console.log("CANT FIND QUERIED LOCATION");
+								// console.log("CANT FIND QUERIED LOCATION");
 							}
 						} else {
-							console.log("GEOCODER ERROR: " + status, requestObject)
+							// console.log("GEOCODER ERROR: " + status, requestObject)
 						}
 					});
 					return map.markers[map.markers.length - 1];
