@@ -609,19 +609,19 @@ DIRECTIONS SEARCH BOX HANDLERS
 $("directions-start").addEventListener("click", function() {
 	lastDirectionsSearch = this;
 	$("directions-results").style.display = "flex";
-	directionsHandler();
+	directionsHandler($("directions-end"));
 });
 
 $("directions-end").addEventListener("click", function() {
 	lastDirectionsSearch = this;
 	$("directions-results").style.display = "flex";
-	directionsHandler();
+	directionsHandler($("directions-start"));
 });
 
 $("directions-start").addEventListener("keyup", directionsHandler);
 $("directions-end").addEventListener("keyup", directionsHandler);
 
-function directionsHandler(e) {
+function directionsHandler(otherSearchBox) {
 	if (this.value == "") {
 		fillDirectionStops();
 	} else if (this.value != "") {
@@ -634,16 +634,13 @@ function directionsHandler(e) {
 		for (let i=0; i<stopList.length; i++) {
 			let stop = stopList[i].toLowerCase();
 			if (query == stop.slice(0, query.length)) {
-				addDirectionsResult(stopList[i]);
-				/*
-				if (lastDirectionsSearch != null) {
-					if (i != lastDirectionsSearch.stopIndex) {
+				if (otherSearchBox.stopIndex !== undefined) {
+					if (i != otherSearchBox.stopIndex) {
 						addDirectionsResult(stopList[i]);
 					}
 				} else {
 					addDirectionsResult(stopList[i]);
 				}
-				*/
 			}
 		}
 	} else {
@@ -697,6 +694,7 @@ function addDirectionsResult(value) {
 		let endIndex = $("directions-end").stopIndex;
 		let timetableTitle = timetables.getActiveTimetable().getTitle();
 		if (startIndex != undefined && endIndex != undefined) {
+			console.log(startIndex, endIndex);
 			setDirections(startIndex, endIndex);
 			
 			// Save Route as Recent Route
