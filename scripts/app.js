@@ -520,7 +520,7 @@ $("schedule-datetime").addEventListener("click", function() {
 		// Update datetime picker here as it will be guarenteed to be correct
 		$("time-hour").value = scheduleDatetime.getUTCHours();
 		let minutes = scheduleDatetime.getUTCMinutes();
-		$("time-minute").value = Math.ceil(minutes/5)*5;
+		$("time-minute").value = (Math.ceil(minutes/5)*5) % 60;
 		$("datetime-modal").style.display = "block";
 	}
 });
@@ -564,6 +564,9 @@ for (let i=0; i<radioButtons.length; i++) {
 		
 		if (this.textContent.trim() == "Leave Now") {
 			$("schedule-datetime").style.color = "rgba(0, 0, 0, 0.5)";
+			let d = new Date();
+			$("schedule-datetime").textContent = d.getUTCHours() + ":" +
+			d.getUTCMinutes().toString().padStart(2, "0");
 		} else {
 			$("schedule-datetime").style.color = "rgba(0, 0, 0, 1)";
 		}
@@ -1066,8 +1069,8 @@ DATETIME MODAL HANDLERS
 
 for (let i=0; i<24; i++)
 	$("time-hour").innerHTML += "<option>" + i + "</option>";
-for (let i=0; i<12; i++)
-	$("time-minute").innerHTML += "<option>" + i*5 + "</option>";
+for (let i=0; i<60; i++)
+	$("time-minute").innerHTML += "<option>" + i + "</option>";
 
 $("datetime-popup-cancel").addEventListener("click", function() {
 	// Go back
