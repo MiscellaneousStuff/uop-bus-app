@@ -181,10 +181,12 @@ class MapComponent {
 		this.map.setCenter(this.routeCenter);
 	}
 	initControls() {
+		/*
 		let directionsControlDiv = document.createElement("div");
 		let directionsControl = new DirectionsControl(directionsControlDiv, this.map);
 		directionsControlDiv.index = 1;
 		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(directionsControlDiv);
+		*/
 		
 		let locationControlDiv = document.createElement("div");
 		let locationControl = new LocationControl(locationControlDiv, this.map);
