@@ -881,10 +881,12 @@ $("routes-clear").addEventListener("click", function() {
 	loadRecentRoutes();
 });
 
+/*
 $("sidebar-help-routes").addEventListener("click", function() {
 	loadRecentRoutes();
 	app.show("routes");
 });
+*/
 
 $("routes-back").addEventListener("click", function() {
 	app.hide("routes");
